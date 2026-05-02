@@ -17,6 +17,8 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.15.2" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.15.1" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.15.1" />
+    <!-- Tools -->
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
     <!-- Web.Api -->
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
     <!-- Web.Blazor -->

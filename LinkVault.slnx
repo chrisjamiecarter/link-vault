@@ -5,11 +5,15 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/LinkVault.Constants/LinkVault.Constants.csproj" Id="a8eb1a35-7f20-42e6-80b9-515bb4acd486" />
+    <Project Path="src/LinkVault.Core/LinkVault.Core.csproj" Id="109844cf-29fa-4d83-93f7-36ce99db67cd" />
     <Project Path="src/LinkVault.Web.Api/LinkVault.Web.Api.csproj" />
     <Project Path="src/LinkVault.Web.Blazor/LinkVault.Web.Blazor.csproj" />
   </Folder>
   <Folder Name="/src/aspire/">
     <Project Path="src/Aspire.AppHost/Aspire.AppHost.csproj" />
     <Project Path="src/Aspire.ServiceDefaults/Aspire.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/src/tools/">
+    <Project Path="src/LinkVault.Tools.DatabaseMigrator/LinkVault.Tools.DatabaseMigrator.csproj" />
   </Folder>
 </Solution>

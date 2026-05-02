@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <UserSecretsId>dotnet-LinkVault.Tools.DatabaseMigrator-7600dd79-7f84-4102-ba2e-b39325141757</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aspire.ServiceDefaults\Aspire.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\LinkVault.Web.Api\LinkVault.Web.Api.csproj" />
+  </ItemGroup>
+</Project>

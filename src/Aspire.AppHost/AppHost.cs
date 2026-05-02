@@ -1,9 +1,16 @@
-using Aspire.AppHost;
+namespace Aspire.AppHost;
 
-var builder = DistributedApplication.CreateBuilder(args);
+internal static class Program
+{
+    private static async Task Main(string[] args)
+    {
+        var builder = DistributedApplication.CreateBuilder(args);
 
-var database = builder.AddDatabase();
-var backend = builder.AddBackend(database);
-builder.AddFrontend(backend);
+        var database = builder.AddDatabase();
+        var migrator = builder.AddMigrator(database);
+        var backend = builder.AddBackend(database, migrator);
+        builder.AddFrontend(backend);
 
-await builder.Build().RunAsync();
+        await builder.Build().RunAsync();
+    }
+}

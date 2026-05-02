@@ -15,7 +15,12 @@ public static class Resources
 
     public static class Database
     {
-        public const string Name = $"{Project}-db";
+        public const string Name = $"{Project}-database";
+    }
+
+    public static class DatabaseMigrator
+    {
+        public const string Name = $"{Project}-migrator";
     }
 
     public static class  WebApi
@@ -25,6 +30,6 @@ public static class Resources
 
     public static class WebBlazor
     {
-        public const string Name = $"{Project}-fe";
+        public const string Name = $"{Project}-blazor";
     }
 }
