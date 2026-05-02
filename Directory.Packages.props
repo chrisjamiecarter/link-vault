@@ -4,15 +4,11 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Static code analysis -->
-    <PackageVersion Include="BlazorBlueprint.Components" Version="3.9.6" />
-    <PackageVersion Include="BlazorBlueprint.Icons.Lucide" Version="2.0.0" />
+    <PackageVersion Include="Aspire.Microsoft.Data.SqlClient" Version="13.2.4" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.2.4" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.25.0.139117" />
-    <!-- Application -->
-    <!-- Infrastructure -->
-    <!-- Web.Api -->
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
-    <!-- ArchitectureTests -->
     <!--Aspire AppHost-->
+    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="13.2.4" />
     <!--Aspire ServiceDefaults-->
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.5.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.5.0" />
@@ -21,5 +17,10 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.15.2" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.15.1" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.15.1" />
+    <!-- Web.Api -->
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
+    <!-- Web.Blazor -->
+    <PackageVersion Include="BlazorBlueprint.Components" Version="3.10.0" />
+    <PackageVersion Include="BlazorBlueprint.Icons.Lucide" Version="2.0.0" />
   </ItemGroup>
 </Project>

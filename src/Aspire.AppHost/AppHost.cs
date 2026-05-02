@@ -1,7 +1,9 @@
+using Aspire.AppHost;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
-builder.AddProject<Projects.LinkVault_Web_Blazor>("linkvault-web-blazor")
-    .WithExternalHttpEndpoints()
-    .WithHttpHealthCheck("/health");
+var database = builder.AddDatabase();
+var api = builder.AddApi(database);
+builder.AddFrontend(api);
 
 await builder.Build().RunAsync();

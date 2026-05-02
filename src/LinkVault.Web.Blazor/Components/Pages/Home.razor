@@ -5,32 +5,32 @@
 <div class="min-h-0 h-full grow">
     <div class="flex min-h-full flex-col justify-center">
         <div class="w-full max-w-3xl mx-auto text-center space-y-8">
-
             <div class="space-y-4">
+                
                 <BbTypographyH1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
                     LinkVault
                 </BbTypographyH1>
                 <BbTypographyLead class="mx-auto max-w-2xl text-muted-foreground">
                     A Simple URL Shortening Service.
                 </BbTypographyLead>
+
+                <BbCard>
+                    <BbCardHeader>
+                        <BbCardTitle>Shorten a Link</BbCardTitle>
+                        <BbCardDescription>Transform your long URL into a short link here.</BbCardDescription>
+                    </BbCardHeader>
+                    <BbCardContent>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <BbInput Type="InputType.Url" placeholder="Paste long url here" class="flex-1" />
+                            <BbButton>Shorten</BbButton>
+                        </div>
+                    </BbCardContent>
+                    <BbCardFooter>
+                        <BbTypographyMuted>LinkVault is a free service to shorten URLs into short links.</BbTypographyMuted>
+                    </BbCardFooter>
+                </BbCard>
+
             </div>
-
-            <BbCard>
-                <BbCardHeader>
-                    <BbCardTitle>Shorten a Link</BbCardTitle>
-                    <BbCardDescription>Transform your long URL into a short link here.</BbCardDescription>
-                </BbCardHeader>
-                <BbCardContent>
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <BbInput Type="InputType.Url" placeholder="Paste long url here" class="flex-1" />
-                        <BbButton>Shorten</BbButton>
-                    </div>
-                </BbCardContent>
-                <BbCardFooter>
-                    <BbTypographyMuted>LinkVault is a free service to shorten URLs into short links.</BbTypographyMuted>
-                </BbCardFooter>
-            </BbCard>
-
         </div>
     </div>
 </div>

@@ -4,6 +4,8 @@
     <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/LinkVault.Constants/LinkVault.Constants.csproj" Id="a8eb1a35-7f20-42e6-80b9-515bb4acd486" />
+    <Project Path="src/LinkVault.Web.Api/LinkVault.Web.Api.csproj" />
     <Project Path="src/LinkVault.Web.Blazor/LinkVault.Web.Blazor.csproj" />
   </Folder>
   <Folder Name="/src/aspire/">
