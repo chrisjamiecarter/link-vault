@@ -8,11 +8,13 @@ internal static class DependencyInjection
         this IDistributedApplicationBuilder builder)
     {
         return builder
-            .AddSqlServer(ResourceNames.SqlServer.Name)
-            .WithContainerName(ResourceNames.SqlServer.Name)
+            .AddSqlServer(Resources.SqlServer.Name)
+            .WithContainerName(Resources.SqlServer.Name)
             .WithLifetime(ContainerLifetime.Persistent)
-            .WithDataVolume()
-            .AddDatabase(ResourceNames.Database.Name);
+            .WithDataVolume(Resources.SqlServer.DataVolumne)
+            .WithEndpointProxySupport(false)
+            .WithHostPort(Resources.SqlServer.Port)
+            .AddDatabase(Resources.Database.Name);
     }
 
     public static IResourceBuilder<ProjectResource> AddApi(
@@ -20,7 +22,7 @@ internal static class DependencyInjection
         IResourceBuilder<SqlServerDatabaseResource> database)
     {
         return builder
-            .AddProject<Projects.LinkVault_Web_Api>(ResourceNames.WebApi.Name)
+            .AddProject<Projects.LinkVault_Web_Api>(Resources.WebApi.Name)
             .WithExternalHttpEndpoints()
             .WithHttpHealthCheck("/health")
             .WithReference(database)
@@ -32,7 +34,7 @@ internal static class DependencyInjection
         IResourceBuilder<ProjectResource> api)
     {
         return builder
-            .AddProject<Projects.LinkVault_Web_Blazor>(ResourceNames.WebBlazor.Name)
+            .AddProject<Projects.LinkVault_Web_Blazor>(Resources.WebBlazor.Name)
             .WithExternalHttpEndpoints()
             .WithHttpHealthCheck("/health")
             .WithReference(api)

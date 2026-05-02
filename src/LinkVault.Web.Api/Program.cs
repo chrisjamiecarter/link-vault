@@ -2,8 +2,6 @@ using LinkVault.Constants;
 using LinkVault.Web.Api;
 using LinkVault.Web.Api.Common.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +11,9 @@ builder.AddServiceDefaults();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-
 builder.Services.AddDbContext<LinkVaultDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString(ResourceNames.Database.Name) ?? throw new InvalidOperationException($"Connection string '{ResourceNames.Database.Name}' not found.");
+    var connectionString = builder.Configuration.GetConnectionString(Resources.Database.Name) ?? throw new InvalidOperationException($"Connection string '{Resources.Database.Name}' not found.");
     options.UseSqlServer(connectionString);
 });
 

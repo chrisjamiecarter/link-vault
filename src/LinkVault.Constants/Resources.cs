@@ -1,6 +1,6 @@
 ﻿namespace LinkVault.Constants;
 
-public static class ResourceNames
+public static class Resources
 {
     private const string Project = "linkvault";
 
@@ -8,7 +8,9 @@ public static class ResourceNames
     {
         public const string Name = $"{Project}-sqlserver";
 
-        public const int Port = 1433;
+        public const string DataVolumne = $"{Project}-sqlserver-data";
+        public const string Endpoint = $"{Project}-sqlserver-endpoint";
+        public const int Port = 14330;
     }
 
     public static class Database
