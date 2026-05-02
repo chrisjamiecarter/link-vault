@@ -15,10 +15,20 @@
   <ItemGroup>
     <ProjectReference Include="..\Aspire.ServiceDefaults\Aspire.ServiceDefaults.csproj" />
   </ItemGroup>
-  
-  <Target Name="BuildTailwindCSS" BeforeTargets="BeforeBuild">
+
+  <Target Name="NpmInstall" BeforeTargets="BeforeBuild" Condition="!Exists('node_modules')">
+    <Message Text="Installing Tailwind CSS..." Importance="high" />
+    <Exec Command="npm ci" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+
+  <Target Name="BuildCss" BeforeTargets="BeforeBuild" Condition="'$(Configuration)' == 'Debug'">
     <Message Text="Building Tailwind CSS..." Importance="high" />
-    <Exec Command="tailwindcss.exe -i wwwroot/css/app-input.css -o wwwroot/css/app.css" />
+    <Exec Command="npm run build:css" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+
+  <Target Name="BuildCssRelease" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <Message Text="Building Tailwind CSS..." Importance="high" />
+    <Exec Command="npm run build:css" WorkingDirectory="$(MSBuildProjectDirectory)" />
   </Target>
 
 </Project>

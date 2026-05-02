@@ -6,6 +6,7 @@
     <!-- Static code analysis -->
     <PackageVersion Include="Aspire.Microsoft.Data.SqlClient" Version="13.2.4" />
     <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.2.4" />
+    <PackageVersion Include="QRCoder" Version="1.8.0" />
     <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.25.0.139117" />
     <!--Aspire AppHost-->
     <PackageVersion Include="Aspire.Hosting.SqlServer" Version="13.2.4" />

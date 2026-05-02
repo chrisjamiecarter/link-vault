@@ -9,13 +9,13 @@
 ### Goal
 Initialize Aspire solution with Blazor Server and all required projects.
 
-- [ ] T001 Create Aspire solution structure with AppHost (Aspire.Hosting.SqlServer), ServiceDefaults, Web, Core, Data, and MigrationService projects
-- [ ] T002 Configure .NET 10 target framework in all projects
-- [ ] T003 Add BlazorBlueprintUI NuGet package to Web project (used Blazorise as alternative)
-- [ ] T004 Add Aspire.Microsoft.EntityFrameworkCore.SqlServer package to Data project
-- [ ] T005 Add QRCoder package to Core project (for local QR fallback)
-- [ ] T006 Configure Aspire appHost with SQL Server resource (simplified for MVP)
-- [ ] T007 Create solution sln file
+- [x] T001 Create Aspire solution structure with AppHost (Aspire.Hosting.SqlServer), ServiceDefaults, Core, Constants, Web, Api, and DatabaseMigrator projects.
+- [x] T002 Configure .NET 10 target framework in all projects.
+- [x] T003 Add BlazorBlueprintUI NuGet package to Web project.
+- [x] T004 Add Aspire.Microsoft.EntityFrameworkCore.SqlServer package.
+- [x] T005 Add QRCoder package to Core project (for local QR fallback)
+- [x] T006 Configure Aspire appHost with SQL Server resource.
+- [x] T007 Create solution slnx file.
 
 ## Phase 2: Foundational
 
