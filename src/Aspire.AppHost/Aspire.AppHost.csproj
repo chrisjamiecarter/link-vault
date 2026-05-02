@@ -1,0 +1,13 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.2.4">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <UserSecretsId>0391ff66-f585-44f7-9862-f2b26116ef99</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LinkVault.Web.Api\LinkVault.Web.Api.csproj" />
+    <ProjectReference Include="..\LinkVault.Web.Blazor\LinkVault.Web.Blazor.csproj" />
+  </ItemGroup>
+
+</Project>

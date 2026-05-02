@@ -427,3 +427,11 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# AI files
+AGENTS.md
+.opencode/
+.specify/
+.playwright/
+opencode.jsonc
+/src/LinkVault.Web.Blazor/tailwindcss.exe

@@ -1,0 +1,25 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Static code analysis -->
+    <PackageVersion Include="BlazorBlueprint.Components" Version="3.9.6" />
+    <PackageVersion Include="BlazorBlueprint.Icons.Lucide" Version="2.0.0" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.25.0.139117" />
+    <!-- Application -->
+    <!-- Infrastructure -->
+    <!-- Web.Api -->
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
+    <!-- ArchitectureTests -->
+    <!--Aspire AppHost-->
+    <!--Aspire ServiceDefaults-->
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.5.0" />
+    <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.5.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.15.3" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.15.3" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.15.2" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.15.1" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.15.1" />
+  </ItemGroup>
+</Project>

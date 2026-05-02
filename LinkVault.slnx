@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/LinkVault.Web.Blazor/LinkVault.Web.Blazor.csproj" />
+  </Folder>
+  <Folder Name="/src/aspire/">
+    <Project Path="src/Aspire.AppHost/Aspire.AppHost.csproj" />
+    <Project Path="src/Aspire.ServiceDefaults/Aspire.ServiceDefaults.csproj" />
+  </Folder>
+</Solution>
