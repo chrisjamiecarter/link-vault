@@ -17,7 +17,7 @@ internal static class DependencyInjection
             .AddDatabase(Resources.Database.Name);
     }
 
-    public static IResourceBuilder<ProjectResource> AddApi(
+    public static IResourceBuilder<ProjectResource> AddBackend(
         this IDistributedApplicationBuilder builder,
         IResourceBuilder<SqlServerDatabaseResource> database)
     {
