@@ -24,11 +24,12 @@ Create database context, entity, and core infrastructure.
 
 **Dependencies**: Phase 1 must complete first
 
-- [ ] T008 Create Link entity in src/LinkVault.Core/Entities/Link.cs
-- [ ] T008a Configure short code length (default: 8 characters) in LinkGeneratorService
-- [ ] T009 Create DbContext in src/LinkVault.Data/LinkVaultDbContext.cs
-- [ ] T010 Configure EF Core with SQL Server in Program.cs
-- [ ] T011 Create initial EF Core migration using Migration Worker Service pattern
+- [x] T008 Create abstract Entity in src/LinkVault.Core/Domain/Entity.cs
+- [x] T008a Create Link entity in src/LinkVault.Core/Data/Link.cs
+- [x] T008b Configure short code length (default: 8 characters) in ShortCodeGenerator
+- [x] T009 Create DbContext in src/LinkVault.Data/LinkVaultDbContext.cs
+- [x] T010 Configure EF Core with SQL Server in Program.cs
+- [x] T011 Create initial EF Core migration using Migration Worker Service pattern
 - [ ] T012 Create ILinkRepository interface in src/LinkVault.Core/Interfaces/ILinkRepository.cs
 - [ ] T013 Implement LinkRepository in src/LinkVault.Data/Repositories/LinkRepository.cs
 - [ ] T014 Add connection string configuration for SQL Server

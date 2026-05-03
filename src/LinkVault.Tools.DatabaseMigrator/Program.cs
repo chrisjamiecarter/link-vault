@@ -1,5 +1,5 @@
 using Aspire.ServiceDefaults;
-using LinkVault.Web.Api;
+using LinkVault.Core;
 
 namespace LinkVault.Tools.DatabaseMigrator;
 
@@ -10,9 +10,8 @@ internal static class Program
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.AddServiceDefaults();
-
-        builder.AddInfrastructure();
-        builder.AddPresentation();
+        builder.AddCore();
+        builder.AddDatabaseMigrator();
 
         var host = builder.Build();
         await host.RunAsync();

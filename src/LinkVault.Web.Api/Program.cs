@@ -1,4 +1,5 @@
 using Aspire.ServiceDefaults;
+using LinkVault.Core;
 
 namespace LinkVault.Web.Api;
 
@@ -9,12 +10,8 @@ internal static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.AddServiceDefaults();
-
-        builder.AddInfrastructure();
-
-        // Move these to a separate extension method.
-        builder.Services.AddProblemDetails();
-        builder.Services.AddOpenApi();
+        builder.AddCore();
+        builder.AddApi();
 
         var app = builder.Build();
 

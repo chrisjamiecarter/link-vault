@@ -4,7 +4,7 @@ namespace LinkVault.Tools.DatabaseMigrator;
 
 internal static class DependencyInjection
 {
-    public static IHostApplicationBuilder AddPresentation(this IHostApplicationBuilder builder)
+    public static IHostApplicationBuilder AddDatabaseMigrator(this IHostApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
 

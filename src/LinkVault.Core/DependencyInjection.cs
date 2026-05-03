@@ -1,0 +1,60 @@
+﻿using LinkVault.Constants;
+using LinkVault.Core.Data;
+using LinkVault.Core.Domain;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+
+namespace LinkVault.Core;
+
+public static class DependencyInjection
+{
+    public static IHostApplicationBuilder AddCore(this IHostApplicationBuilder builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        builder
+            .AddDbContext()
+            .AddOptions();
+
+        return builder;
+    }
+
+    private static IHostApplicationBuilder AddDbContext(this IHostApplicationBuilder builder)
+    {
+        var connectionString = builder.Configuration.GetConnectionString(Resources.Database.Name) ?? throw new InvalidOperationException($"Connection string '{Resources.Database.Name}' not found.");
+
+        builder.Services.AddDbContextFactory<LinkVaultDbContext>(options =>
+        {
+            options.UseSqlServer(connectionString, sqlServerOptions =>
+            {
+                sqlServerOptions.MigrationsHistoryTable(Schemas.Dbo.MigrationsHistory.Table, Schemas.Dbo.MigrationsHistory.Schema);
+            });
+
+            if (builder.Environment.IsDevelopment())
+            {
+                options
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors();
+            }
+        });
+
+        builder.EnrichSqlServerDbContext<LinkVaultDbContext>();
+
+
+        return builder;
+    }
+
+    private static IHostApplicationBuilder AddOptions(this IHostApplicationBuilder builder)
+    {
+        builder.Services
+            .AddOptionsWithValidateOnStart<LinkOptions>()
+            .Bind(builder.Configuration.GetSection(LinkOptions.Key));
+
+        builder.Services.AddSingleton<IValidateOptions<LinkOptions>, LinkOptionsValidator>();
+
+        return builder;
+    }
+}
