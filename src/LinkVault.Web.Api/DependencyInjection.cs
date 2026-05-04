@@ -1,5 +1,7 @@
 ﻿using LinkVault.Constants;
 using LinkVault.Web.Api.RateLimiters;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Options;
 using System.Globalization;
 
@@ -44,7 +46,20 @@ public static class DependencyInjection
                 {
                     context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
                     context.Response.Headers.RetryAfter = rateLimiterOptions.Window.TotalSeconds.ToString(CultureInfo.InvariantCulture);
-                    await context.Response.WriteAsync("Too many requests. Please try again later.");
+
+                    var problemDetailsService = context.RequestServices.GetRequiredService<IProblemDetailsService>();
+
+                    await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+                    {
+                        HttpContext = context,
+                        ProblemDetails =
+                        {
+                            Title = "Too Many Requests",
+                            Status = StatusCodes.Status429TooManyRequests,
+                            Detail = $"You have exceeded the allowed number of requests. Please try again after {rateLimiterOptions.Window.TotalSeconds} seconds."
+                        }
+                    });
+                    
                     return;
                 }
             }
