@@ -17,6 +17,9 @@ internal static class Program
 
         app.MapDefaultEndpoints();
 
+        app.UseRequestTimeouts();
+        app.UseOutputCache();
+
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {

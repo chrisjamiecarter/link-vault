@@ -9,6 +9,9 @@ public static class DependencyInjection
         builder.Services.AddProblemDetails();
         builder.Services.AddOpenApi();
 
+        builder.Services.AddRequestTimeouts();
+        builder.Services.AddOutputCache();
+
         return builder;
     }
 }

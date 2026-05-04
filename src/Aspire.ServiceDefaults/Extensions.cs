@@ -95,8 +95,21 @@ public static class Extensions
 
     public static TBuilder AddDefaultHealthChecks<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
+        builder.Services.AddRequestTimeouts(static config =>
+        {
+            config.AddPolicy("HealthChecks", TimeSpan.FromSeconds(5));
+        });
+
+        builder.Services.AddOutputCache(config =>
+        {
+            config.AddPolicy("HealthChecks", static policy =>
+            {
+                policy.Expire(TimeSpan.FromSeconds(30));
+            });
+        });
+
         builder.Services.AddHealthChecks()
-            // Add a default liveness check to ensure app is responsive
+            // Add a default liveness check to ensure app is responsive.
             .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
 
         return builder;
@@ -104,6 +117,12 @@ public static class Extensions
 
     public static WebApplication MapDefaultEndpoints(this WebApplication app)
     {
+        var healthChecks = app.MapGroup("");
+
+        healthChecks
+            .CacheOutput("HealthChecks")
+            .WithRequestTimeout("HealthChecks");
+        
         // Adding health checks endpoints to applications in non-development environments has security implications.
         // See https://aka.ms/dotnet/aspire/healthchecks for details before enabling these endpoints in non-development environments.
         if (app.Environment.IsDevelopment())

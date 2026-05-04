@@ -12,6 +12,9 @@ internal static class Program
 
         builder.AddServiceDefaults();
 
+        builder.Services.AddRequestTimeouts();
+        builder.Services.AddOutputCache();
+
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
@@ -22,6 +25,9 @@ internal static class Program
         var app = builder.Build();
 
         app.MapDefaultEndpoints();
+
+        app.UseRequestTimeouts();
+        app.UseOutputCache();
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
