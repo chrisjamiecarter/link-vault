@@ -8,6 +8,7 @@ internal static class DependencyInjection
     public static IResourceBuilder<ProjectResource> AddBackend(
         this IDistributedApplicationBuilder builder,
         IResourceBuilder<SqlServerDatabaseResource> database,
+        IResourceBuilder<RedisResource> cache,
         IResourceBuilder<ProjectResource> completionDependency)
     {
         return builder
@@ -15,17 +16,36 @@ internal static class DependencyInjection
             .WithExternalHttpEndpoints()
             .WithHttpHealthCheck("/health")
             .WithReference(database)
+            .WaitFor(database)
+            .WithReference(cache)
+            .WaitFor(cache)
             .WaitForCompletion(completionDependency);
     }
 
+    public static IResourceBuilder<RedisResource> AddCache(
+        this IDistributedApplicationBuilder builder)
+    {
+        return builder
+            .AddRedis(Resources.Cache.Name)
+            .WithContainerName(Resources.Cache.Name)
+            .WithDataVolume(Resources.Cache.DataVolume)
+            .WithRedisInsight(config =>
+            {
+                // This is the container name.
+                config.WithContainerName(Resources.Cache.RedisInsight);
+            },
+            // This is the resource name.
+            containerName: Resources.Cache.RedisInsight);
+    }
+
     public static IResourceBuilder<SqlServerDatabaseResource> AddDatabase(
-    this IDistributedApplicationBuilder builder)
+        this IDistributedApplicationBuilder builder)
     {
         return builder
             .AddSqlServer(Resources.SqlServer.Name)
             .WithContainerName(Resources.SqlServer.Name)
             .WithLifetime(ContainerLifetime.Persistent)
-            .WithDataVolume(Resources.SqlServer.DataVolumne)
+            .WithDataVolume(Resources.SqlServer.DataVolume)
             .WithEndpointProxySupport(false)
             .WithHostPort(Resources.SqlServer.Port)
             .AddDatabase(Resources.Database.Name);

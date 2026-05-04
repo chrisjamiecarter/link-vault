@@ -62,9 +62,70 @@ Primary entity for URL shortening.
 - Provider: SQL Server
 - ORM: Entity Framework Core
 - Migrations: Code-first via EF Core
+- **Data Access**: Commands and Queries consume LinkVaultDbContext directly (no repository pattern)
+
+### DbContext Usage Pattern
+```csharp
+// In Commands/Queries - direct injection
+public sealed class CreateShortUrlHandler
+{
+    private readonly LinkVaultDbContext _db;
+
+    public CreateShortUrlHandler(LinkVaultDbContext db) => _db = db;
+
+    public async Task HandleAsync(CreateShortUrlCommand cmd, CancellationToken ct)
+    {
+        // Direct query
+        var existing = await _db.Links
+            .AsNoTracking()
+            .FirstOrDefaultAsync(l => l.OriginalUrl == cmd.OriginalUrl, ct);
+
+        // Direct write
+        _db.Links.Add(new Link { OriginalUrl = cmd.OriginalUrl, ... });
+        await _db.SaveChangesAsync(ct);
+    }
+}
+```
+
+## Request/Response DTOs
+
+All API operations MUST use explicit DTOs separate from domain entities.
+
+### CreateShortUrlRequest
+
+| Field | Type | Constraints | Notes |
+|-------|------|-------------|-------|
+| OriginalUrl | string | required, validated | Must be valid absolute URL |
+| CustomShortCode | string? | optional | User-specified short code |
+| ExpiresInDays | int? | optional | Custom expiration (default: 30) |
+
+### ShortUrlResponse
+
+| Field | Type | Notes |
+|-------|------|-------|
+| ShortCode | string | The generated short code |
+| ShortUrl | string | Full shortened URL |
+| QrCodeUrl | string? | URL to QR code image |
+| ExpiresAt | DateTimeOffset | Expiration timestamp |
+
+### RedirectResponse
+
+| Field | Type | Notes |
+|-------|------|-------|
+| OriginalUrl | string | The target URL for redirect |
+| IsExpired | bool | Whether the link has expired |
+
+## Vertical Slice Structure
+
+Each feature MUST have its own folder with the following:
+- Commands/ - Write operations (POST, PUT, DELETE)
+- Queries/ - Read operations (GET)
+- Responses/ - Response DTOs specific to this feature
+- [FeatureName]Endpoint.cs - Route mapping
 
 ## Notes
 
 - No analytics tables (out of scope)
 - No user tables (anonymous)
 - Simple single-table design for MVP
+- All DTOs are feature-scoped, not shared

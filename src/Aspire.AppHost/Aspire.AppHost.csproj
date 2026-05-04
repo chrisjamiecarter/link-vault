@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Redis" />
     <PackageReference Include="Aspire.Hosting.SqlServer" />
   </ItemGroup>
 
@@ -13,7 +14,7 @@
     <ProjectReference Include="..\LinkVault.Constants\LinkVault.Constants.csproj" IsAspireProjectResource="false" />
     <ProjectReference Include="..\LinkVault.Tools.DatabaseMigrator\LinkVault.Tools.DatabaseMigrator.csproj" AspireProjectMetadataTypeName="DatabaseMigratorProject" />
     <ProjectReference Include="..\LinkVault.Web.Api\LinkVault.Web.Api.csproj" AspireProjectMetadataTypeName="WebApiProject" />
-    <ProjectReference Include="..\LinkVault.Web.Blazor\LinkVault.Web.Blazor.csproj" AspireProjectMetadataTypeName="WebBlazorProject"/>
+    <ProjectReference Include="..\LinkVault.Web.Blazor\LinkVault.Web.Blazor.csproj" AspireProjectMetadataTypeName="WebBlazorProject" />
   </ItemGroup>
 
 </Project>

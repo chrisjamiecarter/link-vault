@@ -39,6 +39,16 @@ An end-user accesses a shortened URL and is seamlessly redirected to the origina
 
 ## Functional Requirements
 
+### FR-00: Vertical Slice Architecture
+The system MUST implement vertical slice architecture where each feature is self-contained with its own request/response DTOs, handlers, and endpoints.
+
+**Architecture Requirements:**
+- Each feature MUST have its own folder containing Commands, Queries, Responses, and Validators
+- Features MUST NOT share request/response DTOs across slice boundaries
+- Each endpoint MUST be implemented as a static class with a static Handle method
+- Validation MUST be scoped to the feature using DataAnnotations or FluentValidation
+- Error responses MUST use RFC 9457 Problem Details format
+
 ### FR-01: URL Shortening
 The system MUST accept a valid long URL and generate a unique short code that redirects to the original URL.
 - Short codes MUST be URL-safe alphanumeric strings
@@ -82,6 +92,8 @@ The system MUST integrate with an external QR code generation service.
 - Input validation for all URLs
 - Rate limiting: maximum 100 requests per minute per IP address for URL creation; 1000 requests per minute for redirect operations
 - Protection against SQL injection and XSS
+- Error responses MUST use RFC 9457 Problem Details format
+- Use endpoint filters for validation (not middleware)
 
 ### NFR-04: Availability
 - 99.9% uptime target
@@ -98,6 +110,82 @@ The system MUST integrate with an external QR code generation service.
 - ExpiresAt: DateTime (optional)
 - IsActive: boolean
 - QrCodeUrl: string (optional, URL to QR code image)
+
+## Key Architectural Components
+
+### Request/Response DTOs
+All HTTP operations MUST use explicit DTOs separate from domain entities:
+
+| Feature | Request DTO | Response DTO |
+|---------|--------------|--------------|
+| URL Shortening | CreateShortUrlRequest | ShortUrlResponse |
+| Link Redirection | RedirectRequest (route param) | RedirectResult (HTTP redirect) |
+| QR Code | QrCodeRequest (short code) | QrCodeResponse (image URL) |
+
+### Feature Slice Structure
+Each feature MUST follow this structure under `LinkVault.Web.Api/Features/`:
+
+```
+LinkVault.Web.Api/
+  Features/
+    [FeatureName]/
+      Commands/
+        [Operation]Command.cs
+        [Operation]CommandValidator.cs
+      Queries/
+        [Operation]Query.cs
+        [Operation]QueryHandler.cs
+      Responses/
+        [Operation]Response.cs
+      [FeatureName]Endpoint.cs  (maps routes to handlers)
+```
+
+### Data Access Pattern
+- Commands and Queries MUST consume LinkVaultDbContext directly
+- NO repository pattern - no ILinkRepository or LinkRepository
+- Inject LinkVaultDbContext in handler constructors
+- Use _db.Links directly for all data operations
+
+### Endpoint Pattern
+```csharp
+// LinkVault.Web.Api/Features/UrlShortening/UrlShorteningEndpoint.cs
+public static class UrlShorteningEndpoint
+{
+    public static RouteGroupBuilder MapUrlShorteningEndpoints(this RouteGroupBuilder group)
+    {
+        group.MapPost("/", CreateShortUrl)
+             .WithName("CreateShortUrl")
+             .Produces<ShortUrlResponse>(StatusCodes.Status201Created);
+        return group;
+    }
+
+    public static async Task<IResult> CreateShortUrl(
+        CreateShortUrlRequest request,
+        LinkVaultDbContext db,
+        CancellationToken ct)
+    {
+        // Direct DbContext usage - no repository
+        var handler = new CreateShortUrlHandler(db);
+        var result = await handler.HandleAsync(request, ct);
+        return Results.Created($"/{result.ShortCode}", result);
+    }
+}
+```
+
+### Endpoint Pattern
+All HTTP endpoints MUST follow this pattern:
+```csharp
+public static class CreateShortUrlEndpoint
+{
+    public static async Task<IResult> Handle(
+        CreateShortUrlRequest request,
+        ILinkService linkService,
+        CancellationToken ct)
+    {
+        // Implementation
+    }
+}
+```
 
 ## Success Criteria
 

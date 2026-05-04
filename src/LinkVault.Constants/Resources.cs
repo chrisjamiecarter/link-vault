@@ -4,13 +4,12 @@ public static class Resources
 {
     private const string Project = "linkvault";
 
-    public static class SqlServer
+    public static class Cache
     {
-        public const string Name = $"{Project}-sqlserver";
+        public const string Name = $"{Project}-cache";
 
-        public const string DataVolumne = $"{Project}-sqlserver-data";
-        public const string Endpoint = $"{Project}-sqlserver-endpoint";
-        public const int Port = 14330;
+        public const string DataVolume = $"{Project}-cache-data";
+        public const string RedisInsight = $"{Project}-cache-redisinsight";
     }
 
     public static class Database
@@ -21,6 +20,15 @@ public static class Resources
     public static class DatabaseMigrator
     {
         public const string Name = $"{Project}-migrator";
+    }
+
+    public static class SqlServer
+    {
+        public const string Name = $"{Project}-sqlserver";
+
+        public const string DataVolume = $"{Project}-sqlserver-data";
+        public const string Endpoint = $"{Project}-sqlserver-endpoint";
+        public const int Port = 14330;
     }
 
     public static class  WebApi

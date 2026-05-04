@@ -1,5 +1,6 @@
 using Aspire.ServiceDefaults;
 using LinkVault.Core;
+using LinkVault.Web.Api.RateLimiters;
 
 namespace LinkVault.Web.Api;
 
@@ -17,6 +18,7 @@ internal static class Program
 
         app.MapDefaultEndpoints();
 
+        app.UseRateLimiter<SlidingWindowRateLimiter>();
         app.UseRequestTimeouts();
         app.UseOutputCache();
 
@@ -29,6 +31,7 @@ internal static class Program
         app.UseHttpsRedirection();
 
         app.MapGet("/", () => "API service is running.");
+
 
         await app.RunAsync();
     }

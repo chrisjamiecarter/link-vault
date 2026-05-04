@@ -49,13 +49,40 @@ Navigate to: http://localhost:5000
 
 ```
 src/
-  LinkVault.AppHost/              # Aspire orchestrator
-  LinkVault.ServiceDefaults/       # Shared config
-  LinkVault.Web/               # Blazor Server app
-  LinkVault.Core/              # Domain logic
-  LinkVault.Data/              # EF Core + DbContext
-  LinkVault.MigrationService/  # Migration Worker Service
+  Aspire.AppHost/              # Aspire orchestrator
+  Aspire.ServiceDefaults/     # Shared config
+  LinkVault.Core/             # Domain entities, interfaces, services, DbContext
+    Entities/
+    Interfaces/
+    Services/
+    Data/
+      LinkVaultDbContext.cs   # EF Core DbContext (in Core!)
+      Migrations/             # EF Core migrations
+  LinkVault.Web.Api/          # Minimal API - vertical slices live here!
+    Features/                 # Vertical slices (feature-based)
+      UrlShortening/
+        Commands/
+        Responses/
+        UrlShorteningEndpoint.cs
+      LinkRedirection/
+        Queries/
+        RedirectEndpoint.cs
+      QrCodeGeneration/
+        Commands/
+        Responses/
+        QrCodeEndpoint.cs
+  LinkVault.Web.Blazor/       # Blazor Server UI
+    Pages/
+    Components/
+  LinkVault.Tools.DatabaseMigrator/  # Migration Worker Service
 ```
+
+**Key Points:**
+- Vertical slice features live in `LinkVault.Web.Api/Features/`, not in Core
+- Core contains domain entities, service interfaces, **AND** DbContext (LinkVault.Core/Data/)
+- Commands and Queries consume **LinkVaultDbContext directly** (no repository pattern)
+- Blazor project calls API endpoints or injects Core services directly
+- DatabaseMigrator runs migrations on startup, waits for SQL Server container
 
 ## Common Commands
 

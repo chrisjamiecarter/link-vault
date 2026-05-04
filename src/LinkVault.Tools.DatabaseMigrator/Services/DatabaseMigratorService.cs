@@ -56,24 +56,24 @@ internal sealed partial class DatabaseMigratorService(
         LogCompletedMigration(dbContextName);
     }
 
-    [LoggerMessage(Level = LogLevel.Information, Message = "Starting migration for {dbContextName}.")]
+    [LoggerMessage(LogLevel.Information, "Starting migration for {dbContextName}.")]
     private partial void LogStartingMigration(string dbContextName);
 
-    [LoggerMessage(Level = LogLevel.Information, Message = "Checking database connectivity...")]
+    [LoggerMessage(LogLevel.Information, "Checking database connectivity...")]
     private partial void LogCheckingDatabaseConnectivity();
 
-    [LoggerMessage(Level = LogLevel.Error, Message = "Cannot connect to {dbContextName} database.")]
+    [LoggerMessage(LogLevel.Error, "Cannot connect to {dbContextName} database.")]
     private partial void LogCannotConnectToDatabase(string dbContextName);
 
-    [LoggerMessage(Level = LogLevel.Information, Message = "Checking for pending migrations...")]
+    [LoggerMessage(LogLevel.Information, "Checking for pending migrations...")]
     private partial void LogCheckingForPendingMigrations();
 
-    [LoggerMessage(Level = LogLevel.Information, Message = "No pending migrations to apply.")]
+    [LoggerMessage(LogLevel.Information, "No pending migrations to apply.")]
     private partial void LogNoPendingMigrations();
 
-    [LoggerMessage(Level = LogLevel.Information, Message = "Applying pending migrations...")]
+    [LoggerMessage(LogLevel.Information, "Applying pending migrations...")]
     private partial void LogApplyingPendingMigrations();
 
-    [LoggerMessage(Level = LogLevel.Information, Message = "Completed migration for {dbContextName}.")]
+    [LoggerMessage(LogLevel.Information, "Completed migration for {dbContextName}.")]
     private partial void LogCompletedMigration(string dbContextName);
 }

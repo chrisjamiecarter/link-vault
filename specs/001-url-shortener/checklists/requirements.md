@@ -60,9 +60,60 @@
 
 ---
 
-**Last Updated**: 2026-04-30  
-**Status**: PASS  
-**Items**: 27 total  
-**Passed**: 27  
-**Failed**: 0  
+# Architecture Compliance Checklist: Vertical Slice
+
+**Purpose**: Validate vertical slice architecture implementation
+**Created**: 2026-05-03
+**Feature**: 001-url-shortener
+
+## Structure Compliance
+
+- [ ] ARCH001 - Features folder exists at src/LinkVault.Web/Features/ [Structure, Plan §Vertical Slice]
+- [ ] ARCH002 - Each feature has its own folder under Features/ [Structure, Plan §Vertical Slice]
+- [ ] ARCH003 - UrlShortening feature has Commands/, Responses/ subfolders [Structure, Plan §Vertical Slice]
+- [ ] ARCH004 - LinkRedirection feature has Queries/ subfolder [Structure, Plan §Vertical Slice]
+- [ ] ARCH005 - QrCodeGeneration feature has Commands/, Responses/ subfolders [Structure, Plan §Vertical Slice]
+
+## Endpoint Pattern Compliance
+
+- [ ] ARCH006 - Each feature has Endpoint class with static Handle method [Pattern, Research §Endpoint Class Pattern]
+- [ ] ARCH007 - Endpoints use IResult return type [Pattern, Research §Endpoint Class Pattern]
+- [ ] ARCH008 - Endpoints mapped via MapGroup in Program.cs [Pattern, Research §Endpoint Class Pattern]
+- [ ] ARCH009 - Error responses use Problem Details format (RFC 9457) [Pattern, Spec §NFR-03]
+
+## DTO Compliance
+
+- [ ] ARCH010 - CreateShortUrlRequest defined in UrlShortening/Commands/ [DTO, Data-Model §Request/Response DTOs]
+- [ ] ARCH011 - ShortUrlResponse defined in UrlShortening/Responses/ [DTO, Data-Model §Request/Response DTOs]
+- [ ] ARCH012 - RedirectQuery defined in LinkRedirection/Queries/ [DTO, Data-Model §Request/Response DTOs]
+- [ ] ARCH013 - No shared DTOs across feature boundaries [DTO, Plan §Slice Anatomy Rules]
+- [ ] ARCH014 - DTOs are separate from domain Link entity [DTO, Data-Model §Request/Response DTOs]
+
+## Validation Compliance
+
+- [ ] ARCH015 - Validation implemented in feature slice (not shared middleware) [Validation, Research §Key Patterns]
+- [ ] ARCH016 - Request DTOs use DataAnnotations or FluentValidation [Validation, Spec §FR-00]
+
+## Project Structure Compliance
+
+- [ ] ARCH017 - Core project contains only entities and interfaces (no feature code) [Structure, Quickstart §Project Structure]
+- [ ] ARCH018 - Feature code is in Web project under Features/ [Structure, Quickstart §Project Structure]
+- [ ] ARCH019 - Data project contains only DbContext and repositories [Structure, Plan §Directory Structure]
+
+---
+
+**Last Updated**: 2026-05-03
+**Status**: PENDING
+**Items**: 19 total
+**Passed**: 0
+**Failed**: 0
+**Notes**: Added vertical slice architecture compliance checklist
+
+---
+
+**Last Updated**: 2026-04-30
+**Status**: PASS
+**Items**: 27 total
+**Passed**: 27
+**Failed**: 0
 **Notes**: Fixed CHK022 (rate limiting thresholds) and CHK023 (collision-resistant algorithm) in spec.md
