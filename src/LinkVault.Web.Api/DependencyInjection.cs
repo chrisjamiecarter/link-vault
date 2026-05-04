@@ -1,6 +1,5 @@
 ﻿using LinkVault.Constants;
 using LinkVault.Web.Api.RateLimiters;
-using LinkVault.Web.Api.RateLimiting;
 using Microsoft.Extensions.Options;
 using System.Globalization;
 
@@ -33,16 +32,21 @@ public static class DependencyInjection
 
         return app.Use(async (context, next) =>
         {
-            var limiter = context.RequestServices.GetRequiredService<TLimiter>();
-            var clientKey = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
             var rateLimiterOptions = context.RequestServices.GetRequiredService<IOptions<RateLimiterOptions>>().Value;
-
-            if (!await limiter.IsAllowedAsync(clientKey))
+            
+            var path = context.Request.Path.Value?.ToLowerInvariant();
+            if (!rateLimiterOptions.ExemptPaths.Contains(path))
             {
-                context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-                context.Response.Headers.RetryAfter = rateLimiterOptions.Window.TotalSeconds.ToString(CultureInfo.InvariantCulture);
-                await context.Response.WriteAsync("Too many requests. Please try again later.");
-                return;
+                var limiter = context.RequestServices.GetRequiredService<TLimiter>();
+                var clientKey = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+                if (!await limiter.IsAllowedAsync(clientKey))
+                {
+                    context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+                    context.Response.Headers.RetryAfter = rateLimiterOptions.Window.TotalSeconds.ToString(CultureInfo.InvariantCulture);
+                    await context.Response.WriteAsync("Too many requests. Please try again later.");
+                    return;
+                }
             }
 
             await next();

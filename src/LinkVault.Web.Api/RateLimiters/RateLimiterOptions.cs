@@ -7,4 +7,6 @@ public sealed class RateLimiterOptions
     public int Limit { get; init; } = 5;
 
     public TimeSpan Window { get; init; } = TimeSpan.FromSeconds(10);
+
+    public string[]? ExemptPaths { get; init; } = ["/alive", "/health"];
 }
