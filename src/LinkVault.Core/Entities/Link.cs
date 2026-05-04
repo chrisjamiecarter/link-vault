@@ -1,6 +1,7 @@
 ﻿using LinkVault.Core.Domain;
+using LinkVault.Core.Security;
 
-namespace LinkVault.Core.Data;
+namespace LinkVault.Core.Entities;
 
 public sealed class Link
     : Entity<Guid>
@@ -59,12 +60,20 @@ public sealed class Link
         DateTimeOffset createdAt,
         DateTimeOffset? expiresAt,
         bool isActive,
-        string? qrCodeUrl) => 
-        new(
+        string? qrCodeUrl)
+    {
+        if (XssDetector.IsUnsafe(originalUrl))
+        {
+            var detectionReason = XssDetector.GetDetectionReason(originalUrl) ?? "Original URL contains potentially unsafe content.";
+            throw new ArgumentException(detectionReason, nameof(originalUrl));
+        }
+
+        return new(
             originalUrl,
             shortCode,
             createdAt,
             expiresAt ?? createdAt.AddDays(DefaultExpirationDays),
             isActive,
             qrCodeUrl);
+    }
 }

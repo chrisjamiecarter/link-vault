@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LinkVault.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace LinkVault.Core.Data;
 

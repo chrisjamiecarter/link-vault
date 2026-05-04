@@ -33,7 +33,7 @@ Create database context, entity, and core infrastructure.
 - [x] T012 Add connection string configuration for SQL Server
 - [x] T013 Configure health checks with Aspire
 - [x] T014 Add rate limiting middleware for endpoint protection
-- [ ] T015 Add input validation/sanitization for XSS and SQL injection protection
+- [x] T015 Add input validation/sanitization for XSS and SQL injection protection
 - [ ] T015a Configure Problem Details in LinkVault.Web.Api Program.cs
 
 ### Phase 2a: Vertical Slice Foundation

@@ -1,4 +1,4 @@
-﻿using LinkVault.Core.Data;
+﻿using LinkVault.Core.Entities;
 using Microsoft.Extensions.Options;
 
 namespace LinkVault.Core.Domain;
