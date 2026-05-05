@@ -1,5 +1,6 @@
 ﻿using LinkVault.Core.Domain;
 using LinkVault.Core.Security;
+using LinkVault.Core.Services;
 
 namespace LinkVault.Core.Entities;
 
@@ -21,6 +22,7 @@ public sealed class Link
         DateTimeOffset? expiresAt,
         bool isActive,
         string? qrCodeUrl)
+        : base(Guid.CreateVersion7())
     {
         OriginalUrl = originalUrl;
         ShortCode = shortCode;
@@ -57,10 +59,7 @@ public sealed class Link
     public static Link Create(
         string originalUrl,
         string shortCode,
-        DateTimeOffset createdAt,
-        DateTimeOffset? expiresAt,
-        bool isActive,
-        string? qrCodeUrl)
+        DateTimeOffset createdAt)
     {
         if (XssDetector.IsUnsafe(originalUrl))
         {
@@ -72,8 +71,8 @@ public sealed class Link
             originalUrl,
             shortCode,
             createdAt,
-            expiresAt ?? createdAt.AddDays(DefaultExpirationDays),
-            isActive,
-            qrCodeUrl);
+            createdAt.AddDays(DefaultExpirationDays),
+            true,
+            null);
     }
 }

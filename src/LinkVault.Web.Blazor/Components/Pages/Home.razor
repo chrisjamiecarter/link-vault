@@ -1,4 +1,6 @@
 ﻿@page "/"
+@inject LinkVault.Web.Blazor.Clients.LinkVaultApiClient ApiClient
+@using LinkVault.Web.Blazor.Contracts.ShortenUrl
 
 <PageTitle>Home</PageTitle>
 
@@ -21,16 +23,34 @@
                     </BbCardHeader>
                     <BbCardContent>
                         <div class="flex flex-col sm:flex-row gap-3">
-                            <BbInput Type="InputType.Url" placeholder="Paste long url here" class="flex-1" />
-                            <BbButton>Shorten</BbButton>
+                            <BbInput @bind-Value="inputUrl" Type="InputType.Url" placeholder="Paste long url here" class="flex-1" />
+                            <BbButton @onclick="ShortenUrl">Shorten</BbButton>
                         </div>
                     </BbCardContent>
                     <BbCardFooter>
                         <BbTypographyMuted>LinkVault is a free service to shorten URLs into short links.</BbTypographyMuted>
                     </BbCardFooter>
                 </BbCard>
+                
+                @if (!string.IsNullOrEmpty(shortCode))
+                {
+                    <BbLabel>Short Code: @shortCode</BbLabel>
+                }
 
             </div>
         </div>
     </div>
 </div>
+
+@code
+{
+    private string inputUrl = string.Empty;
+    private string shortCode = string.Empty;
+
+    public async Task ShortenUrl()
+    {
+        var request = new ShortenUrlRequest(inputUrl);
+        var result = await ApiClient.ShortenUrlAsync(request);
+        shortCode = result.ShortCode;
+    }
+}

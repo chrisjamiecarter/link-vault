@@ -1,6 +1,7 @@
 ﻿using LinkVault.Constants;
 using LinkVault.Core.Data;
 using LinkVault.Core.Domain;
+using LinkVault.Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ public static class DependencyInjection
 
         builder
             .AddDbContext()
+            .AddServices()
             .AddOptions();
 
         return builder;
@@ -43,6 +45,13 @@ public static class DependencyInjection
 
         builder.EnrichSqlServerDbContext<LinkVaultDbContext>();
 
+
+        return builder;
+    }
+
+    private static IHostApplicationBuilder AddServices(this IHostApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<ShortCodeGeneratorService>();
 
         return builder;
     }

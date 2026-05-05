@@ -1,5 +1,7 @@
 using Aspire.ServiceDefaults;
 using BlazorBlueprint.Components;
+using LinkVault.Constants;
+using LinkVault.Web.Blazor.Clients;
 using LinkVault.Web.Blazor.Components;
 
 namespace LinkVault.Web.Blazor;
@@ -11,6 +13,14 @@ internal static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.AddServiceDefaults();
+
+        builder.Services.AddHttpClient<LinkVaultApiClient>("linkvault-api", (_, client) =>
+        {
+            client.BaseAddress = new Uri($"http+https://{Resources.WebApi.Name}");
+            
+            // TEMP DEV.
+            client.Timeout = TimeSpan.FromSeconds(500);
+        });
 
         builder.Services.AddRequestTimeouts();
         builder.Services.AddOutputCache();

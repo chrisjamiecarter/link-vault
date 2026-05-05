@@ -43,17 +43,18 @@ Establish vertical slice architecture pattern in LinkVault.Web.Api project.
 
 **Dependencies**: Phase 2 must complete first
 
-- [ ] T015b [VS] Create Features folder in LinkVault.Web.Api project
-- [ ] T015c [VS] Create UrlShortening feature slice in LinkVault.Web.Api/Features/UrlShortening/
-- [ ] T015d [VS] Create LinkRedirection feature slice in LinkVault.Web.Api/Features/LinkRedirection/
-- [ ] T015e [VS] Create QrCodeGeneration feature slice in LinkVault.Web.Api/Features/QrCodeGeneration/
-- [ ] T015f [VS] Define CreateShortUrlRequest DTO in UrlShortening/Commands/
-- [ ] T015g [VS] Define ShortUrlResponse DTO in UrlShortening/Responses/
-- [ ] T015h [VS] Define RedirectQuery DTO in LinkRedirection/Queries/
-- [ ] T015g [VS] Define CreateShortUrlRequest DTO in UrlShortening/Commands/
-- [ ] T015h [VS] Define ShortUrlResponse DTO in UrlShortening/Responses/
-- [ ] T015i [VS] Define RedirectQuery DTO in LinkRedirection/Queries/
-- [ ] T015j [VS] Configure Problem Details in Program.cs
+- [x] T015b [VS] Create Features folder in LinkVault.Web.Api project
+- [x] T015c [VS] Create UrlShortening feature group in LinkVault.Web.Api/Features/UrlShortening/
+- [x] T015d [VS] Create ShortenUrl feature slice in LinkVault.Web.Api/Features/UrlShortening/ShortenUrl/
+- [x] T015e [VS] Create ExpandUrl feature slice in LinkVault.Web.Api/Features/UrlShortening/RedirectToUrl/
+- [x] T015f [VS] Create GenerateQrCode feature slice in LinkVault.Web.Api/Features/UrlShortening/GenerateQrCode/
+- [x] T015g [VS] Define ShortenUrl.Request DTO in UrlShortening/ShortenUrl/
+- [x] T015h [VS] Define ShortUrl.Response DTO in UrlShortening/ShortenUrl/
+- [x] T015i [VS] Define ExpandUrl.Request DTO in UrlShortening/ExpandUrl/
+- [x] T015j [VS] Define ExpandUrl.Response DTO in UrlShortening/ExpandUrl/
+- [x] T015i [VS] Define GenerateQrCode.Request DTO in UrlShortening/GenerateQrCode/
+- [x] T015j [VS] Define GenerateQrCode.Response DTO in UrlShortening/GenerateQrCode/
+- [x] T015n [VS] Configure Problem Details in Program.cs
 
 ## Phase 3: User Story 1 - URL Shortening
 
@@ -62,15 +63,14 @@ Anonymous users can enter a URL on the landing page and receive a shortened URL.
 
 **Independent Test Criteria**: Can create a shortened URL by entering a valid URL on the landing page.
 
-- [ ] T016 [P] [US1] Create LinkGeneratorService in src/LinkVault.Core/Services/LinkGeneratorService.cs
-- [ ] T017 [P] [US1] Create UrlShorteningHandler in src/LinkVault.Core/Features/UrlShortening/Commands/CreateShortUrlCommand.cs
-- [ ] T018 [P] [US1] Create shortened URL response model in src/LinkVault.Core/Features/UrlShortening/Responses/ShortUrlResponse.cs
-- [ ] T018a [P] [US1] Implement duplicate URL detection - return existing short code if OriginalUrl matches
-- [ ] T019 [US1] Implement CreateShortUrl endpoint/route in Web project
-- [ ] T019a [US1] Create UrlShorteningEndpoint.cs static class with Handle method
-- [ ] T019b [US1] Map endpoint in Program.cs using MapGroup
-- [ ] T020 [US1] Create landing page Blazor component in src/LinkVault.Web/Pages/Index.razor
-- [ ] T021 [US1] Add basic styling with BlazorBlueprintUI in Index.razor
+- [x] T016 [P] [US1] Create ShortCodeGeneratorService in src/LinkVault.Core/Services/ShortCodeGeneratorService.cs
+- [x] T017 [P] [US1] Create ShortenUrl.Handler in src/LinkVault.Core/Features/UrlShortening/ShortenUrl/ShortenUrl.cs
+- [x] T018 [P] [US1] Implement duplicate URL detection - return existing short code if OriginalUrl matches
+- [x] T019 [US1] Implement ShortenUrl endpoint/route in Web project
+- [x] T019a [US1] Create ShortenUrl.Endpoint.cs static class with Handler method
+- [x] T019b [US1] Map endpoint in Program.cs using MapGroup
+- [x] T020 [US1] Create landing page Blazor component in src/LinkVault.Web/Pages/Home.razor
+- [x] T021 [US1] Add basic styling with BlazorBlueprintUI in Index.razor
 
 ## Phase 4: User Story 2 - Link Expiration
 

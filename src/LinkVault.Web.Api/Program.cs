@@ -22,6 +22,8 @@ internal static class Program
         app.UseRequestTimeouts();
         app.UseOutputCache();
 
+        app.MapEndpoints();
+
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -31,7 +33,6 @@ internal static class Program
         app.UseHttpsRedirection();
 
         app.MapGet("/", () => "API service is running.");
-
 
         await app.RunAsync();
     }
