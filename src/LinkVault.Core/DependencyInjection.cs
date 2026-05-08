@@ -1,5 +1,6 @@
 ﻿using LinkVault.Constants;
-using LinkVault.Core.Data;
+using LinkVault.Core.Database;
+using LinkVault.Core.Database.Schemas;
 using LinkVault.Core.Domain;
 using LinkVault.Core.Services;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +33,7 @@ public static class DependencyInjection
         {
             options.UseSqlServer(connectionString, sqlServerOptions =>
             {
-                sqlServerOptions.MigrationsHistoryTable(Schemas.Dbo.MigrationsHistory.Table, Schemas.Dbo.MigrationsHistory.Schema);
+                sqlServerOptions.MigrationsHistoryTable(Dbo.MigrationsHistory.Table, Dbo.MigrationsHistory.Schema.Value);
             });
 
             if (builder.Environment.IsDevelopment())

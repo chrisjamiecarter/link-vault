@@ -1,4 +1,4 @@
-﻿using LinkVault.Core.Data;
+﻿using LinkVault.Core.Database;
 using LinkVault.Core.Entities;
 using LinkVault.Core.Services;
 using Microsoft.EntityFrameworkCore;

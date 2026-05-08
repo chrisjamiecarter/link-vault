@@ -1,5 +1,5 @@
 ﻿using LinkVault.Core.Security;
-using SharedKernel;
+using Sweatbox.SharedKernel;
 
 namespace LinkVault.Core.Entities;
 
@@ -34,9 +34,9 @@ public sealed class Link
     public string OriginalUrl { get; private set; } = default!;
 
     public string ShortCode { get; private set; } = default!;
-    
+
     public DateTimeOffset CreatedAt { get; private set; } = default!;
-    
+
     public DateTimeOffset? ExpiresAt { get; private set; } = default!;
 
     public bool IsActive { get; private set; } = true;

@@ -1,4 +1,4 @@
-using LinkVault.Core.Data;
+using LinkVault.Core.Database;
 using LinkVault.Tools.DatabaseMigrator.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;

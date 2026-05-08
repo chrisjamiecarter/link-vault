@@ -30,6 +30,6 @@
     <!-- Web.Blazor -->
     <PackageVersion Include="BlazorBlueprint.Components" Version="3.10.0" />
     <PackageVersion Include="BlazorBlueprint.Icons.Lucide" Version="2.0.0" />
-    <PackageVersion Include="Sweatbox.SharedKernel" Version="0.0.2" />
+    <PackageVersion Include="Sweatbox.SharedKernel" Version="0.0.4" />
   </ItemGroup>
 </Project>

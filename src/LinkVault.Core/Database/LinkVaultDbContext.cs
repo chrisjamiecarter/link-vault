@@ -1,7 +1,7 @@
 ﻿using LinkVault.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace LinkVault.Core.Data;
+namespace LinkVault.Core.Database;
 
 public class LinkVaultDbContext(DbContextOptions<LinkVaultDbContext> options)
     : DbContext(options)

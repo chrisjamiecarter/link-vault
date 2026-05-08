@@ -2,14 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace LinkVault.Core.Data;
+namespace LinkVault.Core.Database.Configurations;
 
 internal sealed class LinkConfiguration
     : IEntityTypeConfiguration<Link>
 {
     public void Configure(EntityTypeBuilder<Link> builder)
     {
-        builder.ToTable(Schemas.LinkVault.Links.Table, Schemas.LinkVault.Links.Schema);
+        builder.ToSchemaTable(Schemas.LinkVault.Links);
 
         builder.HasKey(link => link.Id);
 
