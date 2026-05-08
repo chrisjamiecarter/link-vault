@@ -1,11 +1,10 @@
-﻿using LinkVault.Core.Domain;
-using LinkVault.Core.Security;
-using LinkVault.Core.Services;
+﻿using LinkVault.Core.Security;
+using SharedKernel;
 
 namespace LinkVault.Core.Entities;
 
 public sealed class Link
-    : Entity<Guid>
+    : EntityBase<Guid>
 {
     public const int OriginalUrlMaxLength = 2048;
     public const int ShortCodeMinLength = 4;
