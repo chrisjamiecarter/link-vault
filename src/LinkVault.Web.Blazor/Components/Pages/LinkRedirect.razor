@@ -1,4 +1,7 @@
 ﻿@page "/{shortCode}"
+@using LinkVault.Web.Blazor.Exceptions
+@using Microsoft.AspNetCore.Mvc
+@using System.Net
 
 
 <PageTitle>Redirect | LinkVault</PageTitle>
@@ -9,18 +12,19 @@
         <BbSpinner Size="SpinnerSize.Large" />
     </div>
 }
-else if (errorMessage is not null)
+else if (error is not null)
 {
     <div class="flex items-center justify-center min-h-screen">
         <BbCard>
             <BbCardHeader>
-                <BbCardTitle>Unable to Redirect</BbCardTitle>
+                <LucideIcon Name="triangle-alert" Class="self-center" Color="red" Size="48" StrokeWidth="4.0" />
+                <BbCardTitle Class="self-center">@error.Title</BbCardTitle>
             </BbCardHeader>
             <BbCardContent>
-                <p class="text-muted-foreground">@errorMessage</p>
+                <p class="text-muted-foreground">@error.Detail</p>
             </BbCardContent>
             <BbCardFooter>
-                <BbButton Variant="ButtonVariant.Secondary" @onclick="GoHome">
+                <BbButton Class="w-full" Variant="ButtonVariant.Secondary" @onclick="GoHome">
                     Go to Home
                 </BbButton>
             </BbCardFooter>
@@ -32,34 +36,49 @@ else if (errorMessage is not null)
     [Parameter]
     public string ShortCode { get; set; } = string.Empty;
 
+    private sealed record LinkRedirectError(
+        HttpStatusCode StatusCode = HttpStatusCode.InternalServerError,
+        string Title = "Unexpected Error",
+        string Detail = "An unexpected error occurred. Please try again later.")
+    {
+        public static readonly LinkRedirectError Default = new(
+            HttpStatusCode.InternalServerError,
+            "Unexpected Error",
+            "An unexpected error occurred. Please try again later.");
+
+        public static LinkRedirectError FromApiException(ApiException exception) => new(
+            exception.StatusCode,
+            exception.Problem?.Title ?? Default.Title,
+            exception.Problem?.Detail ?? Default.Detail);
+    }
+
     private bool isLoading = true;
-    private string? errorMessage;
+    private LinkRedirectError? error;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (!firstRender)
         {
-            try
-            {
-                var response = await ApiClient.ExpandUrlAsync(new(ShortCode));
-                Navigation.NavigateTo(response.OriginalUrl, forceLoad: true);
-            }
-            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
-            {
-                errorMessage = "This link does not exist or has been removed.";
-                isLoading = false;
-            }
-            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Gone)
-            {
-                errorMessage = "This link has expired.";
-                isLoading = false;
-            }
-            catch (Exception)
-            {
-                errorMessage = "An unexpected error occurred. Please try again later.";
-                isLoading = false;
-            }
+            return;
         }
+
+        try
+        {
+            var response = await ApiClient.ExpandUrlAsync(new(ShortCode));
+            Navigation.NavigateTo(response.OriginalUrl, forceLoad: true);
+        }
+        catch (ApiException exception)
+        {
+            error = LinkRedirectError.FromApiException(exception);
+            isLoading = false;
+        }
+        catch (Exception)
+        {
+            error = LinkRedirectError.Default;
+            isLoading = false;
+        }
+        
+        await InvokeAsync(StateHasChanged);
     }
 
     private void GoHome() => Navigation.NavigateTo("/");

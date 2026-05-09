@@ -28,6 +28,7 @@ internal static class DependencyInjection
         return builder
             .AddRedis(Resources.Cache.Name)
             .WithContainerName(Resources.Cache.Name)
+            .WithLifetime(ContainerLifetime.Persistent)
             .WithDataVolume(Resources.Cache.DataVolume)
             .WithRedisInsight(config =>
             {

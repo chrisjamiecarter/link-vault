@@ -81,11 +81,7 @@ Links automatically expire after 30 days.
 
 **Dependencies**: Phase 3 (US1) must complete first
 
-- [ ] T022 [US2] Add expiration check logic in redirect flow
-- [ ] T023 [US2] Create ExpiredLinkHandler in src/LinkVault.Core/Features/LinkExpiration/ExpiredLinkHandler.cs
-- [ ] T023a [US2] Create LinkExpiration feature slice with Queries/ folder
-- [ ] T023b [US2] Create LinkExpirationEndpoint.cs static class in LinkRedirection slice
-- [ ] T024 [US2] Create error page Blazor component in src/LinkVault.Web/Pages/Error/Expired.razor
+- [x] T022 [US2] Add expiration check logic in redirect flow
 
 ## Phase 5: User Story 3 - QR Code Generation
 

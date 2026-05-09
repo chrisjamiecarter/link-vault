@@ -1,6 +1,5 @@
 ﻿using LinkVault.Core.Database;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LinkVault.Web.Api.Features.UrlShortening.ExpandUrl;
@@ -21,7 +20,7 @@ public static class ExpandUrl
                 .WithTags("links");
         }
 
-        public static async Task<Results<Ok<Response>, NotFound<ProblemDetails>, BadRequest<ProblemDetails>, ProblemHttpResult>> Handler(
+        public static async Task<Results<Ok<Response>, ProblemHttpResult>> Handler(
             string shortCode,
             LinkVaultDbContext context,
             CancellationToken ct)
@@ -32,32 +31,26 @@ public static class ExpandUrl
 
             if (link is null)
             {
-                return TypedResults.NotFound(new ProblemDetails
-                {
-                    Status = StatusCodes.Status404NotFound,
-                    Title = "Link Not Found",
-                    Detail = $"No link found for short code '{shortCode}'."
-                });
+                return TypedResults.Problem(
+                    statusCode: StatusCodes.Status404NotFound,
+                    title: "Link Not Found",
+                    detail: $"No link found for short code '{shortCode}'.");
             }
 
             if (!link.IsActive)
             {
-                return TypedResults.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status404NotFound,
-                    Title = "Link Inactive",
-                    Detail = $"The link with short code '{shortCode}' is inactive."
-                });
+                return TypedResults.Problem(
+                    statusCode: StatusCodes.Status403Forbidden,
+                    title: "Link Inactive",
+                    detail: $"The link with short code '{shortCode}' is inactive.");
             }
 
             if (link.ExpiresAt.HasValue && link.ExpiresAt.Value < DateTimeOffset.UtcNow)
             {
-                return TypedResults.BadRequest(new ProblemDetails
-                {
-                    Status = StatusCodes.Status410Gone,
-                    Title = "Link Expired",
-                    Detail = $"The link with short code '{shortCode}' expired on {link.ExpiresAt:yyyy-MM-dd}."
-                });
+                return TypedResults.Problem(
+                    statusCode: StatusCodes.Status410Gone,
+                    title: "Link Expired",
+                    detail: $"The link with short code '{shortCode}' has expired.");
             }
 
             return TypedResults.Ok(new Response(link.Id, link.OriginalUrl));
