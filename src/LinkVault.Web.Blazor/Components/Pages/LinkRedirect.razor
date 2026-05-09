@@ -1,0 +1,66 @@
+﻿@page "/{shortCode}"
+
+
+<PageTitle>Redirect | LinkVault</PageTitle>
+
+@if (isLoading)
+{
+    <div class="flex items-center justify-center min-h-screen">
+        <BbSpinner Size="SpinnerSize.Large" />
+    </div>
+}
+else if (errorMessage is not null)
+{
+    <div class="flex items-center justify-center min-h-screen">
+        <BbCard>
+            <BbCardHeader>
+                <BbCardTitle>Unable to Redirect</BbCardTitle>
+            </BbCardHeader>
+            <BbCardContent>
+                <p class="text-muted-foreground">@errorMessage</p>
+            </BbCardContent>
+            <BbCardFooter>
+                <BbButton Variant="ButtonVariant.Secondary" @onclick="GoHome">
+                    Go to Home
+                </BbButton>
+            </BbCardFooter>
+        </BbCard>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string ShortCode { get; set; } = string.Empty;
+
+    private bool isLoading = true;
+    private string? errorMessage;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                var response = await ApiClient.ExpandUrlAsync(new(ShortCode));
+                Navigation.NavigateTo(response.OriginalUrl, forceLoad: true);
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                errorMessage = "This link does not exist or has been removed.";
+                isLoading = false;
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Gone)
+            {
+                errorMessage = "This link has expired.";
+                isLoading = false;
+            }
+            catch (Exception)
+            {
+                errorMessage = "An unexpected error occurred. Please try again later.";
+                isLoading = false;
+            }
+        }
+    }
+
+    private void GoHome() => Navigation.NavigateTo("/");
+}

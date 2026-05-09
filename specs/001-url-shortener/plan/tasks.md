@@ -116,10 +116,10 @@ End-users can access shortened URL and be redirected to original URL.
 
 **Dependencies**: Phase 3 (US1) must complete first
 
-- [ ] T031 [US4] Create redirect route in src/LinkVault.Web/Pages/{shortCode}.razor
-- [ ] T031a [US4] Create RedirectQuery.cs in LinkRedirection/Queries/
-- [ ] T031b [US4] Create RedirectQueryHandler.cs in LinkRedirection/Queries/
-- [ ] T032 [US4] Implement redirect logic with expiration check
+- [x] T031 [US4] Create redirect route in src/LinkVault.Web.Blazor/Pages/LinkRedirect.razor
+- [x] T031a [US4] Create ExpandUrl.cs in src/LinkVault.Web.Api/Features/UrlShortening/ExpandUrl/
+- [x] T031b [US4] Create Response and Endpoint in ExpandUrl.cs
+- [x] T032 [US4] Implement redirect logic with expiration check
 - [ ] T033 [US4] Add HTTP redirect response (302/301)
 
 ## Phase 7: Polish & Cross-Cutting
