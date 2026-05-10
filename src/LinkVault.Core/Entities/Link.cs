@@ -20,7 +20,7 @@ public sealed class Link
         DateTimeOffset createdAt,
         DateTimeOffset? expiresAt,
         bool isActive,
-        string? qrCodeUrl)
+        byte[]? qrCodeImage)
         : base(Guid.CreateVersion7())
     {
         OriginalUrl = originalUrl;
@@ -28,7 +28,7 @@ public sealed class Link
         CreatedAt = createdAt;
         ExpiresAt = expiresAt;
         IsActive = isActive;
-        QrCodeUrl = qrCodeUrl;
+        QrCodeImage = qrCodeImage;
     }
 
     public string OriginalUrl { get; private set; } = default!;
@@ -41,7 +41,7 @@ public sealed class Link
 
     public bool IsActive { get; private set; } = true;
 
-    public string? QrCodeUrl { get; private set; } = default!;
+    public byte[]? QrCodeImage { get; private set; } = default!;
 
     /// <summary>
     /// OriginalUrl: valid URL format (absolute URI)	❌ Missing	Entity has OriginalUrlMaxLength constant but no validation in Create()
@@ -73,5 +73,10 @@ public sealed class Link
             createdAt.AddDays(DefaultExpirationDays),
             true,
             null);
+    }
+
+    public void SetQrCodeImage(byte[] qrCodeImage)
+    {
+        QrCodeImage = qrCodeImage;
     }
 }

@@ -4,16 +4,19 @@ using LinkVault.Core.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LinkVault.Core.Data.Migrations
+namespace LinkVault.Core.Database.Migrations
 {
     [DbContext(typeof(LinkVaultDbContext))]
-    partial class LinkVaultDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260510154004_LinkQrCodeImage")]
+    partial class LinkQrCodeImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

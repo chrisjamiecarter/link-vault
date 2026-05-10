@@ -64,7 +64,7 @@ internal sealed class LinkConfiguration
             .IsRequired();
 
         builder
-            .Property(link => link.QrCodeUrl)
-            .HasColumnName(nameof(Link.QrCodeUrl));
+            .Property(link => link.QrCodeImage)
+            .HasColumnName(nameof(Link.QrCodeImage));
     }
 }

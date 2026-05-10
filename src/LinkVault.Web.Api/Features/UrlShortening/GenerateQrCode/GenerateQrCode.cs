@@ -22,7 +22,8 @@ public static class GenerateQrCode
             app.MapGet("/links/{shortCode}/qrcode", Handler)
                 .AllowAnonymous()
                 .WithName(Name)
-                .WithTags("links");
+                .WithTags("links")
+                .CacheOutput();
         }
 
         public static async Task<Results<Ok<Response>, ProblemHttpResult>> Handler(
@@ -34,7 +35,6 @@ public static class GenerateQrCode
             CancellationToken ct)
         {
             var link = await context.Links
-                .AsNoTracking()
                 .FirstOrDefaultAsync(link => link.ShortCode == shortCode, ct);
 
             if (link is null)
@@ -43,6 +43,14 @@ public static class GenerateQrCode
                     statusCode: StatusCodes.Status404NotFound,
                     title: "Link Not Found",
                     detail: $"No link found for short code '{shortCode}'.");
+            }
+
+            if (link.QrCodeImage is not null && link.QrCodeImage.Length > 0)
+            {
+                return TypedResults.Ok(new Response(
+                    GetFileName(link.ShortCode),
+                    "image/png",
+                    link.QrCodeImage));
             }
 
             var shortCodeUrl = $"{baseUrl.TrimEnd('/')}/{link.ShortCode}";
@@ -55,10 +63,16 @@ public static class GenerateQrCode
                 options.Value,
                 ct) ?? QrCodeGeneratorService.Generate(shortCodeUrl);
 
+            link.SetQrCodeImage(imageBytes);
+
+            await context.SaveChangesAsync(ct);
+
             return TypedResults.Ok(new Response(
-                $"linkvault-{link.ShortCode}.png",
+                GetFileName(link.ShortCode),
                 "image/png",
                 imageBytes));
         }
+
+        private static string GetFileName(string shortCode) => $"linkvault-{shortCode}.png";
     }
 }

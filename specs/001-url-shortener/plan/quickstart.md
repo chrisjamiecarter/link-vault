@@ -105,4 +105,4 @@ src/
 - **Database connection**: Check SQL Server is running
 - **QR code fails**: Verify API key or check fallback is working
 - **Port conflicts**: Check ports 5000, 5001 are available
-- **Migration creation**: Package Manager Console `Add-Migration [Name] -Project LinkVault.Core -StartupProject LinkVault.Tools.DatabaseMigrator -OutputDir Data/Migrations`
+- **Migration creation**: Package Manager Console `Add-Migration [Name] -Project LinkVault.Core -StartupProject LinkVault.Tools.DatabaseMigrator -OutputDir Database/Migrations`
