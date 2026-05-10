@@ -48,6 +48,7 @@ public static class GenerateQrCode
             var shortCodeUrl = $"{baseUrl.TrimEnd('/')}/{link.ShortCode}";
 
             var imageBytes =
+                // Note: Temp Service ?? API ?? Service. Should be API ?? Service when live.
                 QrCodeGeneratorService.Generate(shortCodeUrl) ??
                 await apiClient.GenerateQrCodeAsync(
                 shortCodeUrl,

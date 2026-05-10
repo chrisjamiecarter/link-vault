@@ -27,7 +27,10 @@ internal static class Program
 
         // Add services to the container.
         builder.Services.AddRazorComponents()
-            .AddInteractiveServerComponents();
+            .AddInteractiveServerComponents(options =>
+            {
+                options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(3);
+            });
 
         // Add BlazorBlueprint services (primitives, toast, dialog).
         builder.Services.AddBlazorBlueprintComponents();
