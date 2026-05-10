@@ -55,9 +55,9 @@ public static class GenerateQrCode
                 ct) ?? QrCodeGeneratorService.Generate(shortCodeUrl);
 
             return TypedResults.Ok(new Response(
-                imageBytes,
                 $"linkvault-{link.ShortCode}.png",
-                "image/png"));
+                "image/png",
+                imageBytes));
         }
     }
 }
