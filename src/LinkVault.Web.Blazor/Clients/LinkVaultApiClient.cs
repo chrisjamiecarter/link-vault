@@ -1,4 +1,5 @@
 ﻿using LinkVault.Web.Blazor.Contracts.ExpandUrl;
+using LinkVault.Web.Blazor.Contracts.GenerateQrCode;
 using LinkVault.Web.Blazor.Contracts.ShortenUrl;
 using LinkVault.Web.Blazor.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,15 @@ internal sealed class LinkVaultApiClient(HttpClient httpClient)
         var response = await httpClient.GetAsync($"/links/{request.ShortCode}", ct);
         await EnsureSuccessAsync(response, ct);
         return (await response.Content.ReadFromJsonAsync<ExpandUrlResponse>(ct))!;
+    }
+
+    public async Task<GenerateQrCodeResponse> GenerateQrCodeAsync(
+        GenerateQrCodeRequest request,
+        CancellationToken ct = default)
+    {
+        var response = await httpClient.GetAsync($"/links/{request.ShortCode}/qrcode?baseUrl={Uri.EscapeDataString(request.BaseUrl)}", ct);
+        await EnsureSuccessAsync(response, ct);
+        return (await response.Content.ReadFromJsonAsync<GenerateQrCodeResponse>(ct))!;
     }
 
     public async Task<ShortenUrlResponse> ShortenUrlAsync(

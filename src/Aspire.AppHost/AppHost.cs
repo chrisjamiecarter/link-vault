@@ -11,7 +11,7 @@ internal static class Program
 
         var migrator = builder.AddMigrator(database);
         var backend = builder.AddBackend(database, cache, migrator);
-        builder.AddFrontend(backend);
+        var _ = builder.AddFrontend(backend);
 
         await builder.Build().RunAsync();
     }

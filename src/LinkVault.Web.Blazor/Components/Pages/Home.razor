@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using LinkVault.Web.Blazor.Contracts.GenerateQrCode
 
 <PageTitle>Home | LinkVault </PageTitle>
 
@@ -22,7 +23,7 @@
                     <BbCardContent>
                         <div class="flex flex-col sm:flex-row gap-3">
                             <BbInput @bind-Value="inputUrl" Type="InputType.Url" placeholder="Paste long url here" class="flex-1" />
-                            <BbButton @onclick="ShortenUrl">Shorten</BbButton>
+                            <BbButton @onclick="ShortenUrlAsync">Shorten</BbButton>
                         </div>
                     </BbCardContent>
                     <BbCardFooter>
@@ -33,6 +34,21 @@
                 @if (!string.IsNullOrEmpty(shortCode))
                 {
                     <BbLabel>Short Code: @shortCode</BbLabel>
+                    
+                    <BbButton Href="@ShortCodeUrl" Target="_blank">
+                        <LucideIcon Name="external-link" class="mr-2 h-4 w-4" />
+                        Visit
+                    </BbButton>
+
+                    @if (qrCode != null)
+                    {
+                        <img src="@qrCode.Src" alt="QR Code" class="mt-4" />
+                        
+                        <BbButton @onclick="DownloadQrCodeAsync">
+                            <LucideIcon Name="download" class="mr-2 h-4 w-4" />
+                            Download
+                        </BbButton>
+                    }
                 }
 
             </div>
@@ -42,13 +58,48 @@
 
 @code
 {
+    private sealed record QrCodeDto(string FileName, string MediaType, byte[] ImageBytes)
+    {
+        public string Src => $"data:{MediaType};base64,{Base64}";
+        public string Base64 => Convert.ToBase64String(ImageBytes);
+    }
+
     private string inputUrl = string.Empty;
     private string shortCode = string.Empty;
+    private QrCodeDto? qrCode;
 
-    public async Task ShortenUrl()
+    private string ShortCodeUrl => string.IsNullOrEmpty(shortCode) ? string.Empty : $"{Navigation.BaseUri}{shortCode}";
+
+    private async Task ShortenUrlAsync()
     {
         var request = new ShortenUrlRequest(inputUrl);
-        var result = await ApiClient.ShortenUrlAsync(request);
-        shortCode = result.ShortCode;
+        var response = await ApiClient.ShortenUrlAsync(request);
+        shortCode = response.ShortCode;
+
+        await InvokeAsync(StateHasChanged);
+
+        await GenerateQrCodeAsync();
+    }
+
+    private async Task GenerateQrCodeAsync()
+    {
+        if (string.IsNullOrWhiteSpace(shortCode))
+        {
+            return;
+        }
+
+        var request = new GenerateQrCodeRequest(shortCode, Navigation.BaseUri);
+        var response = await ApiClient.GenerateQrCodeAsync(request);
+        qrCode = new(response.FileName, response.MediaType, response.ImageBytes);
+    }
+
+    private async Task DownloadQrCodeAsync()
+    {
+        if (qrCode is null)
+        {
+            return;
+        }
+
+        await JS.InvokeVoidAsync("downloadFile", qrCode.FileName, qrCode.MediaType, qrCode.Base64);
     }
 }

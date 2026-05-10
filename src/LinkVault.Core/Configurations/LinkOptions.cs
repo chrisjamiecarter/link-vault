@@ -1,4 +1,4 @@
-﻿namespace LinkVault.Core.Domain;
+﻿namespace LinkVault.Core.Configurations;
 
 public class LinkOptions
 {

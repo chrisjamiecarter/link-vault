@@ -83,6 +83,7 @@ Links automatically expire after 30 days.
 
 - [x] T022 [US2] Add expiration check logic in redirect flow
 
+
 ## Phase 5: User Story 3 - QR Code Generation
 
 ### Goal
@@ -116,7 +117,6 @@ End-users can access shortened URL and be redirected to original URL.
 - [x] T031a [US4] Create ExpandUrl.cs in src/LinkVault.Web.Api/Features/UrlShortening/ExpandUrl/
 - [x] T031b [US4] Create Response and Endpoint in ExpandUrl.cs
 - [x] T032 [US4] Implement redirect logic with expiration check
-- [ ] T033 [US4] Add HTTP redirect response (302/301)
 
 ## Phase 7: Polish & Cross-Cutting
 
@@ -135,7 +135,12 @@ Final integration and verification.
 
 ### Out of Scope (per spec.md)
 - NFR-02 Scalability (horizontal scaling, DB partitioning, CDN) - deferred to future
-
+- T023 [US2] Create ExpiredLinkHandler in src/LinkVault.Core/Features/LinkExpiration/ExpiredLinkHandler.cs
+- T023a [US2] Create LinkExpiration feature slice with Queries/ folder
+- T023b [US2] Create LinkExpirationEndpoint.cs static class in LinkRedirection slice
+- T024 [US2] Create error page Blazor component in src/LinkVault.Web/Pages/Error/Expired.razor
+- T033 [US4] Add HTTP redirect response (302/301)
+- 
 ## MVP Scope
 
 **Recommended MVP Start**: Phase 1 + Phase 2 + Phase 3 (User Story 1)

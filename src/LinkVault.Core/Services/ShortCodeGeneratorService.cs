@@ -1,4 +1,4 @@
-﻿using LinkVault.Core.Domain;
+﻿using LinkVault.Core.Configurations;
 using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 

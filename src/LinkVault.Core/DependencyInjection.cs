@@ -1,4 +1,6 @@
 ﻿using LinkVault.Constants;
+using LinkVault.Core.Clients;
+using LinkVault.Core.Configurations;
 using LinkVault.Core.Database;
 using LinkVault.Core.Database.Schemas;
 using LinkVault.Core.Domain;
@@ -19,8 +21,9 @@ public static class DependencyInjection
 
         builder
             .AddDbContext()
-            .AddServices()
-            .AddOptions();
+            .AddHttpClients()
+            .AddOptions()
+            .AddServices();
 
         return builder;
     }
@@ -46,6 +49,12 @@ public static class DependencyInjection
 
         builder.EnrichSqlServerDbContext<LinkVaultDbContext>();
 
+        return builder;
+    }
+
+    private static IHostApplicationBuilder AddHttpClients(this IHostApplicationBuilder builder)
+    {
+        builder.Services.AddHttpClient<IQrCodeApiClient, QrServerApiClient>();
 
         return builder;
     }
@@ -64,6 +73,12 @@ public static class DependencyInjection
             .Bind(builder.Configuration.GetSection(LinkOptions.Key));
 
         builder.Services.AddSingleton<IValidateOptions<LinkOptions>, LinkOptionsValidator>();
+
+        builder.Services
+            .AddOptionsWithValidateOnStart<QrCodeOptions>()
+            .Bind(builder.Configuration.GetSection(QrCodeOptions.Key));
+
+        builder.Services.AddSingleton<IValidateOptions<QrCodeOptions>, QrCodeOptionsValidator>();
 
         return builder;
     }
