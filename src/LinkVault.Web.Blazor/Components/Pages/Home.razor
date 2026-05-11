@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using LinkVault.Web.Blazor.Contracts.GenerateQrCode
 
 <PageTitle>Home | LinkVault </PageTitle>
 
@@ -33,22 +32,38 @@
                 
                 @if (!string.IsNullOrEmpty(shortCode))
                 {
-                    <BbLabel>Short Code: @shortCode</BbLabel>
-                    
-                    <BbButton Href="@ShortCodeUrl" Target="_blank">
-                        <LucideIcon Name="external-link" class="mr-2 h-4 w-4" />
-                        Visit
-                    </BbButton>
-
-                    @if (qrCode != null)
-                    {
-                        <img src="@qrCode.Src" alt="QR Code" class="mt-4" />
-                        
-                        <BbButton @onclick="DownloadQrCodeAsync">
-                            <LucideIcon Name="download" class="mr-2 h-4 w-4" />
-                            Download
-                        </BbButton>
-                    }
+                    <BbCard>
+                        <BbCardHeader>
+                            <BbCardTitle>Your Shortened Link</BbCardTitle>
+                        </BbCardHeader>
+                        <BbCardContent>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between gap-2">
+                                    <div>
+                                        <BbTypographyMuted>Short URL:</BbTypographyMuted>
+                                        <BbLabel>@ShortCodeUrl</BbLabel>
+                                    </div>
+                                    <div class="flex items-center justify-center gap-2">
+                                        <BbButton Size="ButtonSize.IconSmall" Href="@ShortCodeUrl" Target="_blank" AriaLabel="Visit">
+                                            <LucideIcon Name="external-link" />
+                                        </BbButton>
+                                        @if (qrCode is not null)
+                                        {
+                                            <div class="flex flex-col items-center gap-2">
+                                                <img src="@qrCode.Src" alt="QR Code" class="w-24 h-24 border rounded-lg" />
+                                            </div>
+                                        }
+                                        <BbButton Size="ButtonSize.IconSmall" @onclick="@(() => DownloadQrCodeAsync(qrCode))" Disabled="@(qrCode is null)" AriaLabel="Download">
+                                            <LucideIcon Name="download" />
+                                        </BbButton>
+                                        <BbButton Size="ButtonSize.IconSmall" @onclick="@(() => CopyShortUrlAsync(ShortCodeUrl))" AriaLabel="Copy">
+                                            <LucideIcon Name="copy" />
+                                        </BbButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </BbCardContent>
+                    </BbCard>
                 }
 
             </div>
@@ -93,13 +108,25 @@
         qrCode = new(response.FileName, response.MediaType, response.ImageBytes);
     }
 
-    private async Task DownloadQrCodeAsync()
+    private async Task CopyShortUrlAsync(string shortUrl)
+    {
+        try
+        {
+            await Clipboard.WriteTextAsync(shortUrl);
+        }   
+        catch (Exception)
+        {
+            Console.WriteLine("Cannot write to the clipboard.");
+        }
+    }
+
+    private async Task DownloadQrCodeAsync(QrCodeDto? qrCode)
     {
         if (qrCode is null)
         {
             return;
         }
 
-        await JS.InvokeVoidAsync("downloadFile", qrCode.FileName, qrCode.MediaType, qrCode.Base64);
+        await Download.DownloadFileAsync(qrCode.FileName, qrCode.ImageBytes);
     }
 }

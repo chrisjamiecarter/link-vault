@@ -1,7 +1,10 @@
-﻿window.downloadFile = (fileName, mediaType, base64) => {
-    const link = document.createElement('a');
-    link.href = `data:${mediaType};base64,${base64}`;
-    link.download = fileName;
-    link.click();
-    link.remove();
+﻿window.downloadFileFromStream = async (fileName, stream, mediaType) => {
+    const arrayBuffer = await stream.arrayBuffer();
+    const blob = new Blob([arrayBuffer], { type: mediaType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    URL.revokeObjectURL(url);
 };

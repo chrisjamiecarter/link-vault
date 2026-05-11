@@ -6,6 +6,7 @@
 @using System.Net.Http
 @using System.Net.Http.Json
 @using LinkVault.Web.Blazor.Clients
+@using LinkVault.Web.Blazor.Services
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
@@ -15,8 +16,10 @@
 @using LinkVault.Web.Blazor
 @using LinkVault.Web.Blazor.Components
 @using LinkVault.Web.Blazor.Components.Layout
+@using LinkVault.Web.Blazor.Contracts.GenerateQrCode
 @using LinkVault.Web.Blazor.Contracts.ShortenUrl
 
-@inject IJSRuntime JS
+@inject ClipboardService Clipboard
+@inject DownloadService Download
 @inject LinkVaultApiClient ApiClient
 @inject NavigationManager Navigation

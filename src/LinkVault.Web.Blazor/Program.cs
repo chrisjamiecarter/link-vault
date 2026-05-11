@@ -3,6 +3,7 @@ using BlazorBlueprint.Components;
 using LinkVault.Constants;
 using LinkVault.Web.Blazor.Clients;
 using LinkVault.Web.Blazor.Components;
+using LinkVault.Web.Blazor.Services;
 
 namespace LinkVault.Web.Blazor;
 
@@ -34,6 +35,9 @@ internal static class Program
 
         // Add BlazorBlueprint services (primitives, toast, dialog).
         builder.Services.AddBlazorBlueprintComponents();
+
+        builder.Services.AddScoped<ClipboardService>();
+        builder.Services.AddScoped<DownloadService>();
 
         var app = builder.Build();
 

@@ -93,16 +93,16 @@ Users receive a QR code image for their shortened URL.
 
 **Dependencies**: Phase 3 (US1) must complete first
 
-- [ ] T025 [P] [US3] Create IQrCodeService interface in src/LinkVault.Core/Interfaces/IQrCodeService.cs
-- [ ] T026 [P] [US3] Create ExternalQrCodeService in src/LinkVault.Core/Services/ExternalQrCodeService.cs
-- [ ] T027 [P] [US3] Create LocalQrCodeService (fallback) in src/LinkVault.Core/Services/LocalQrCodeService.cs
-- [ ] T028 [US3] Implement QR code fallback pattern (external primary, local on failure)
-- [ ] T028a [US3] Create QrCodeGeneration feature slice with Commands/, Responses/ folders
-- [ ] T028b [US3] Create GenerateQrCodeCommand.cs in QrCodeGeneration/Commands/
-- [ ] T028c [US3] Create QrCodeResponse.cs in QrCodeGeneration/Responses/
-- [ ] T028d [US3] Create QrCodeEndpoint.cs static class with Handle method
-- [ ] T029 [US3] Add QR code display to landing page in Index.razor
-- [ ] T030 [US3] Add QR code download functionality in Index.razor
+- [X] T025 [P] [US3] Create IQrCodeService interface in src/LinkVault.Core/Interfaces/IQrCodeService.cs
+- [X] T026 [P] [US3] Create ExternalQrCodeService in src/LinkVault.Core/Services/ExternalQrCodeService.cs
+- [X] T027 [P] [US3] Create LocalQrCodeService (fallback) in src/LinkVault.Core/Services/LocalQrCodeService.cs
+- [X] T028 [US3] Implement QR code fallback pattern (external primary, local on failure)
+- [X] T028a [US3] Create QrCodeGeneration feature slice with Commands/, Responses/ folders
+- [X] T028b [US3] Create GenerateQrCodeCommand.cs in QrCodeGeneration/Commands/
+- [X] T028c [US3] Create QrCodeResponse.cs in QrCodeGeneration/Responses/
+- [X] T028d [US3] Create QrCodeEndpoint.cs static class with Handle method
+- [X] T029 [US3] Add QR code display to landing page in Index.razor
+- [X] T030 [US3] Add QR code download functionality in Index.razor
 
 ## Phase 6: User Story 4 - Link Redirection
 
