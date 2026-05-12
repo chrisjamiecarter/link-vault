@@ -12,7 +12,7 @@ internal sealed class LinkVaultApiClient(HttpClient httpClient)
         ExpandUrlRequest request,
         CancellationToken ct = default)
     {
-        var response = await httpClient.GetAsync($"/links/{request.ShortCode}", ct);
+        var response = await httpClient.GetAsync($"/api/links/{request.ShortCode}", ct);
         await EnsureSuccessAsync(response, ct);
         return (await response.Content.ReadFromJsonAsync<ExpandUrlResponse>(ct))!;
     }
@@ -21,7 +21,7 @@ internal sealed class LinkVaultApiClient(HttpClient httpClient)
         GenerateQrCodeRequest request,
         CancellationToken ct = default)
     {
-        var response = await httpClient.GetAsync($"/links/{request.ShortCode}/qrcode?baseUrl={Uri.EscapeDataString(request.BaseUrl)}", ct);
+        var response = await httpClient.GetAsync($"/api/links/{request.ShortCode}/qrcode?baseUrl={Uri.EscapeDataString(request.BaseUrl)}", ct);
         await EnsureSuccessAsync(response, ct);
         return (await response.Content.ReadFromJsonAsync<GenerateQrCodeResponse>(ct))!;
     }
@@ -30,7 +30,7 @@ internal sealed class LinkVaultApiClient(HttpClient httpClient)
         ShortenUrlRequest request,
         CancellationToken ct = default)
     {
-        var response = await httpClient.PostAsJsonAsync("/links", request, ct);
+        var response = await httpClient.PostAsJsonAsync("/api/links", request, ct);
         await EnsureSuccessAsync(response, ct);
         return (await response.Content.ReadFromJsonAsync<ShortenUrlResponse>(ct))!;
     }

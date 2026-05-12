@@ -17,11 +17,12 @@ internal static class Program
         var app = builder.Build();
 
         app.MapDefaultEndpoints();
-
+        app.UseExceptionHandler();
+        app.UseHttpsRedirection();
         app.UseRateLimiter<SlidingWindowRateLimiter>();
         app.UseRequestTimeouts();
         app.UseOutputCache();
-
+        
         app.MapEndpoints();
 
         // Configure the HTTP request pipeline.
@@ -29,8 +30,6 @@ internal static class Program
         {
             app.MapOpenApi();
         }
-
-        app.UseHttpsRedirection();
 
         app.MapGet("/", () => "API service is running.");
 
