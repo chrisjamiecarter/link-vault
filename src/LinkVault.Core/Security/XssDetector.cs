@@ -4,22 +4,24 @@ namespace LinkVault.Core.Security;
 
 public static partial class XssDetector
 {
-    [GeneratedRegex("data:", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    public const int MatchTimeoutInMilliseconds = 1000;
+
+    [GeneratedRegex("data:", RegexOptions.IgnoreCase | RegexOptions.Compiled, MatchTimeoutInMilliseconds)]
     private static partial Regex DataUriPattern();
 
-    [GeneratedRegex(@"\s+on\w+\s*=", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    [GeneratedRegex(@"\s+on\w+\s*=", RegexOptions.IgnoreCase | RegexOptions.Compiled, MatchTimeoutInMilliseconds)]
     private static partial Regex EventHandlerPattern();
 
     [GeneratedRegex(@"<(img|svg|iframe|body|input|button|a|form|object|embed|video|audio|marquee|details|keygen|textarea|select)", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
     private static partial Regex HtmlTagPattern();
 
-    [GeneratedRegex("javascript:", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    [GeneratedRegex("javascript:", RegexOptions.IgnoreCase | RegexOptions.Compiled, MatchTimeoutInMilliseconds)]
     private static partial Regex JavaScriptProtocolPattern();
 
-    [GeneratedRegex(@"[""'][^""']*\s+on\w+\s*=", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    [GeneratedRegex(@"[""'][^""']*\s+on\w+\s*=", RegexOptions.IgnoreCase | RegexOptions.Compiled, MatchTimeoutInMilliseconds)]
     private static partial Regex QuotedAttributeEventPattern();
 
-    [GeneratedRegex("<script", RegexOptions.IgnoreCase | RegexOptions.Compiled)]
+    [GeneratedRegex("<script", RegexOptions.IgnoreCase | RegexOptions.Compiled, MatchTimeoutInMilliseconds)]
     private static partial Regex ScriptTagPattern();
 
     public static string? GetDetectionReason(string? input)
