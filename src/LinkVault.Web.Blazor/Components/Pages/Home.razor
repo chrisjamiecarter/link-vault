@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using LinkVault.Web.Blazor.Exceptions
+@using System.Net
 
 <PageTitle>Home | LinkVault </PageTitle>
 
@@ -24,6 +26,11 @@
                             <BbInput @bind-Value="inputUrl" Type="InputType.Url" placeholder="Paste long url here" class="flex-1" />
                             <BbButton @onclick="ShortenUrlAsync">Shorten</BbButton>
                         </div>
+                        @if (error is not null)
+                        {
+                            <BbLabel>@error.Title</BbLabel>
+                            <BbLabel>@error.Detail</BbLabel>
+                        }
                     </BbCardContent>
                     <BbCardFooter>
                         <BbTypographyMuted>LinkVault is a free service to shorten URLs into short links.</BbTypographyMuted>
@@ -78,7 +85,25 @@
         public string Src => $"data:{MediaType};base64,{Base64}";
         public string Base64 => Convert.ToBase64String(ImageBytes);
     }
+    
+    private sealed record ApiErrorDto(
+        HttpStatusCode StatusCode = HttpStatusCode.InternalServerError,
+        string Title = "Unexpected Error",
+        string Detail = "An unexpected error occurred. Please try again later.")
+    {
+        public static readonly ApiErrorDto Default = new(
+            HttpStatusCode.InternalServerError,
+            "Unexpected Error",
+            "An unexpected error occurred. Please try again later.");
 
+        public static ApiErrorDto FromApiException(ApiException exception) => new(
+            exception.StatusCode,
+            exception.Problem?.Title ?? Default.Title,
+            exception.Problem?.Detail ?? Default.Detail);
+    }
+    
+    private bool isLoading = true;
+    private ApiErrorDto? error;
     private string inputUrl = string.Empty;
     private string shortCode = string.Empty;
     private QrCodeDto? qrCode;
@@ -87,9 +112,22 @@
 
     private async Task ShortenUrlAsync()
     {
-        var request = new ShortenUrlRequest(inputUrl);
-        var response = await ApiClient.ShortenUrlAsync(request);
-        shortCode = response.ShortCode;
+        try
+        {
+            var request = new ShortenUrlRequest(inputUrl);
+            var response = await ApiClient.ShortenUrlAsync(request);
+            shortCode = response.ShortCode;
+        }
+        catch (ApiException exception)
+        {
+            error = ApiErrorDto.FromApiException(exception);
+            isLoading = false;
+        }
+        catch (Exception)
+        {
+            error = ApiErrorDto.Default;
+            isLoading = false;
+        }
 
         await InvokeAsync(StateHasChanged);
 
