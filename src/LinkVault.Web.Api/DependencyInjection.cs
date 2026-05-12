@@ -1,4 +1,5 @@
-﻿using LinkVault.Constants;
+﻿using FluentValidation;
+using LinkVault.Constants;
 using LinkVault.Web.Api.Features.UrlShortening;
 using LinkVault.Web.Api.RateLimiters;
 using Microsoft.Extensions.Options;
@@ -14,7 +15,16 @@ public static class DependencyInjection
 
         builder.AddRedisClient(Resources.Cache.Name);
 
-        builder.Services.AddProblemDetails();
+        builder.Services.AddProblemDetails(options =>
+        {
+            options.CustomizeProblemDetails = context =>
+            {
+                context.ProblemDetails.Extensions["traceId"] =
+                    context.HttpContext.TraceIdentifier;
+                context.ProblemDetails.Extensions["instance"] =
+                    context.HttpContext.Request.Path.Value;
+            };
+        });
         builder.Services.AddOpenApi();
 
         builder.Services.AddSingleton<FixedWindowRateLimiter>();
@@ -22,6 +32,8 @@ public static class DependencyInjection
 
         builder.Services.AddRequestTimeouts();
         builder.Services.AddOutputCache();
+
+        builder.Services.AddValidatorsFromAssembly(AssemblyReference.Assembly);
 
         return builder;
     }

@@ -1,9 +1,24 @@
-﻿namespace LinkVault.Web.Api.Features.UrlShortening.ShortenUrl;
+﻿using FluentValidation;
+using LinkVault.Core.Entities;
+using LinkVault.Core.Security;
 
-public class ShortenUrlValidator : IEndpointFilter
+namespace LinkVault.Web.Api.Features.UrlShortening.ShortenUrl;
+
+public class ShortenUrlValidator : AbstractValidator<ShortenUrlRequest>
 {
-    public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
+    public ShortenUrlValidator()
     {
-        return next;
+        RuleFor(request => request.OriginalUrl)
+            .NotEmpty()
+            .MaximumLength(Link.OriginalUrlMaxLength)
+            .Must(BeAValidAbsoluteHttpUri)
+            .Must(NotContainXss);
     }
+
+    private static bool BeAValidAbsoluteHttpUri(string url)
+        => Uri.TryCreate(url, UriKind.Absolute, out var uri)
+           && uri.Scheme is "http" or "https";
+
+    private static bool NotContainXss(string url)
+        => !XssDetector.IsUnsafe(url);
 }

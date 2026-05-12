@@ -7,6 +7,7 @@ public static class ShortenUrlEndpoint
     public static void MapShortenUrlEndpoint(this RouteGroupBuilder group)
     {
         group.MapPost("/", ShortenUrlHandler.Handle)
+            .AddEndpointFilter<FluentValidationFilter<ShortenUrlRequest>>()
             .AllowAnonymous()
             .WithName(Name);
     }
