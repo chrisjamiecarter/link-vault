@@ -1,17 +1,17 @@
 ﻿using LinkVault.Core.Database;
 using LinkVault.Core.Entities;
 using LinkVault.Core.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace LinkVault.Web.Api.Features.UrlShortening.ShortenUrl;
 
-public static class ShortenUrlHandler
-{
-    public static async Task<Results<Ok<ShortenUrlResponse>, ProblemHttpResult>> Handle(
-        ShortenUrlRequest request,
+public sealed class ShortenUrlHandler(
         LinkVaultDbContext context,
-        ShortCodeGeneratorService service,
+        ShortCodeGeneratorService service)
+    : IHandler<ShortenUrlRequest, ShortenUrlResponse>
+{
+    public async Task<HandleResult<ShortenUrlResponse>> HandleAsync(
+        ShortenUrlRequest request,
         CancellationToken ct)
     {
         var existingLink = await context.Links
@@ -20,7 +20,8 @@ public static class ShortenUrlHandler
 
         if (existingLink is not null)
         {
-            return TypedResults.Ok(new ShortenUrlResponse(existingLink.Id, existingLink.ShortCode));
+            return new HandleResult<ShortenUrlResponse>.Success(
+                new ShortenUrlResponse(existingLink.Id, existingLink.ShortCode));
         }
 
         var link = Link.Create(
@@ -32,7 +33,7 @@ public static class ShortenUrlHandler
 
         await context.SaveChangesAsync(ct);
 
-        // Change to Results.Created when the GET endpoint is implemented.
-        return TypedResults.Ok(new ShortenUrlResponse(link.Id, link.ShortCode));
+        return new HandleResult<ShortenUrlResponse>.Created(
+            new ShortenUrlResponse(link.Id, link.ShortCode), $"api//links/{link.ShortCode}");
     }
 }
