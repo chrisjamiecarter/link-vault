@@ -34,6 +34,6 @@ public sealed class ShortenUrlHandler(
         await context.SaveChangesAsync(ct);
 
         return new HandleResult<ShortenUrlResponse>.Created(
-            new ShortenUrlResponse(link.Id, link.ShortCode), $"api//links/{link.ShortCode}");
+            new ShortenUrlResponse(link.Id, link.ShortCode), $"api/links/{link.ShortCode}");
     }
 }
