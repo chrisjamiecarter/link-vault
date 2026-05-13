@@ -5,6 +5,8 @@ using LinkVault.Web.Api.Features.UrlShortening.ShortenUrl;
 using LinkVault.Web.Api.RateLimiters;
 using Microsoft.Extensions.Options;
 using System.Globalization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace LinkVault.Web.Api;
 
@@ -37,6 +39,13 @@ public static class DependencyInjection
         builder.Services.AddScoped<ShortenUrlHandler>();
 
         builder.Services.AddValidatorsFromAssembly(AssemblyReference.Assembly);
+
+        builder.Services.ConfigureHttpJsonOptions(options =>
+        {
+            options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
 
         return builder;
     }
