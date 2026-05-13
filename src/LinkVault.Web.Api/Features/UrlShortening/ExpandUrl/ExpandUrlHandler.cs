@@ -1,45 +1,40 @@
 ﻿using LinkVault.Core.Database;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace LinkVault.Web.Api.Features.UrlShortening.ExpandUrl;
 
-public static class ExpandUrlHandler
+public sealed class ExpandUrlHandler(LinkVaultDbContext context)
+    : IHandler<ExpandUrlRequest, ExpandUrlResponse>
 {
-    public static async Task<Results<Ok<ExpandUrlResponse>, ProblemHttpResult>> Handle(
-        string shortCode,
-        LinkVaultDbContext context,
+    private readonly LinkVaultDbContext _context = context;
+
+    public async Task<HandleResult<ExpandUrlResponse>> HandleAsync(
+        ExpandUrlRequest request,
         CancellationToken ct)
     {
-        var link = await context.Links
+        var link = await _context.Links
             .AsNoTracking()
-            .FirstOrDefaultAsync(link => link.ShortCode == shortCode, ct);
+            .FirstOrDefaultAsync(link => link.ShortCode == request.ShortCode, ct);
 
         if (link is null)
         {
-            return TypedResults.Problem(
-                statusCode: StatusCodes.Status404NotFound,
-                title: "Link Not Found",
-                detail: $"No link found for short code '{shortCode}'.");
+            return new HandleResult<ExpandUrlResponse>.NotFound(
+                $"No link found for short code '{request.ShortCode}'.");
         }
 
         if (!link.IsActive)
         {
-            return TypedResults.Problem(
-                statusCode: StatusCodes.Status403Forbidden,
-                title: "Link Inactive",
-                detail: $"The link with short code '{shortCode}' is inactive.");
+            return new HandleResult<ExpandUrlResponse>.NotFound(
+                $"No link with short code '{request.ShortCode}' is inactive.");
         }
 
         if (link.ExpiresAt.HasValue && link.ExpiresAt.Value < DateTimeOffset.UtcNow)
         {
-            return TypedResults.Problem(
-                statusCode: StatusCodes.Status410Gone,
-                title: "Link Expired",
-                detail: $"The link with short code '{shortCode}' has expired.");
+            return new HandleResult<ExpandUrlResponse>.NotFound(
+                $"No link with short code '{request.ShortCode}' has expired.");
         }
 
-        return TypedResults.Ok(new ExpandUrlResponse(link.Id, link.OriginalUrl));
+        return new HandleResult<ExpandUrlResponse>.Success(
+            new ExpandUrlResponse(link.Id, link.OriginalUrl));
     }
 }
-
