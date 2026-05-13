@@ -1,13 +1,14 @@
-﻿using FluentValidation;
+﻿using System.Globalization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using FluentValidation;
 using LinkVault.Constants;
 using LinkVault.Web.Api.Features.UrlShortening;
 using LinkVault.Web.Api.Features.UrlShortening.ExpandUrl;
+using LinkVault.Web.Api.Features.UrlShortening.GenerateQrCode;
 using LinkVault.Web.Api.Features.UrlShortening.ShortenUrl;
 using LinkVault.Web.Api.RateLimiters;
 using Microsoft.Extensions.Options;
-using System.Globalization;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace LinkVault.Web.Api;
 
@@ -38,6 +39,7 @@ public static class DependencyInjection
         builder.Services.AddOutputCache();
 
         builder.Services.AddScoped<ExpandUrlHandler>();
+        builder.Services.AddScoped<GenerateQrCodeHandler>();
         builder.Services.AddScoped<ShortenUrlHandler>();
 
         builder.Services.AddValidatorsFromAssembly(AssemblyReference.Assembly);
