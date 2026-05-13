@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using LinkVault.Constants;
 using LinkVault.Web.Api.Features.UrlShortening;
+using LinkVault.Web.Api.Features.UrlShortening.ExpandUrl;
 using LinkVault.Web.Api.Features.UrlShortening.ShortenUrl;
 using LinkVault.Web.Api.RateLimiters;
 using Microsoft.Extensions.Options;
@@ -36,6 +37,7 @@ public static class DependencyInjection
         builder.Services.AddRequestTimeouts();
         builder.Services.AddOutputCache();
 
+        builder.Services.AddScoped<ExpandUrlHandler>();
         builder.Services.AddScoped<ShortenUrlHandler>();
 
         builder.Services.AddValidatorsFromAssembly(AssemblyReference.Assembly);
