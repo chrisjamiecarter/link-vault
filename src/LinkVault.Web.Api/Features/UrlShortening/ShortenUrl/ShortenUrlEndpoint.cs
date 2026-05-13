@@ -9,9 +9,11 @@ public static class ShortenUrlEndpoint
     public static void MapShortenUrlEndpoint(this RouteGroupBuilder group)
     {
         group.MapPost("/", Handler)
-            .AddEndpointFilter<FluentValidationFilter<ShortenUrlRequest>>()
             .AllowAnonymous()
-            .WithName(Name);
+            .WithName(Name)
+            .Produces<ShortenUrlResponse>(StatusCodes.Status200OK)
+            .Produces<ShortenUrlResponse>(StatusCodes.Status201Created)
+            .AddEndpointFilter<FluentValidationFilter<ShortenUrlRequest>>();
     }
 
     public static async Task<Results<Ok<ShortenUrlResponse>, Created<ShortenUrlResponse>, ProblemHttpResult>> Handler(
