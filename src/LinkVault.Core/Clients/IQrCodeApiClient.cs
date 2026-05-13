@@ -1,9 +1,8 @@
 ﻿using LinkVault.Core.Configurations;
 
-namespace LinkVault.Core.Clients
+namespace LinkVault.Core.Clients;
+
+public interface IQrCodeApiClient
 {
-    public interface IQrCodeApiClient
-    {
-        Task<byte[]?> GenerateQrCodeAsync(string shortCodeUrl, QrCodeOptions options, CancellationToken ct = default);
-    }
+    Task<byte[]?> GenerateQrCodeAsync(string shortCodeUrl, QrCodeOptions options, CancellationToken ct = default);
 }
