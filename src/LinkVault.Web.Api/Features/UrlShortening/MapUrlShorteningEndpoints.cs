@@ -8,7 +8,7 @@ public static class MapUrlShorteningEndpoints
 {
     public static IEndpointRouteBuilder MapUrlShortening(this IEndpointRouteBuilder builder)
     {
-        var group = builder.MapGroup("/api/links/")
+        var group = builder.MapGroup("/api/links")
             .WithTags("links");
 
         group.MapExpandUrlEndpoint();
