@@ -24,7 +24,7 @@
                     <BbCardContent>
                         <div class="flex flex-col sm:flex-row gap-3">
                             <BbInput @bind-Value="inputUrl" Type="InputType.Url" placeholder="Paste long url here" class="flex-1" />
-                            <BbButton @onclick="ShortenUrlAsync">Shorten</BbButton>
+                            <BbButton @onclick="ShortenUrlAsync" Loading="@isLoading">Shorten</BbButton>
                         </div>
                         @if (error is not null)
                         {
@@ -85,7 +85,7 @@
         public string Src => $"data:{MediaType};base64,{Base64}";
         public string Base64 => Convert.ToBase64String(ImageBytes);
     }
-    
+
     private sealed record ApiErrorDto(
         HttpStatusCode StatusCode = HttpStatusCode.InternalServerError,
         string Title = "Unexpected Error",
@@ -101,7 +101,7 @@
             exception.Problem?.Title ?? Default.Title,
             exception.Problem?.Detail ?? Default.Detail);
     }
-    
+
     private bool isLoading = true;
     private ApiErrorDto? error;
     private string inputUrl = string.Empty;
@@ -114,6 +114,7 @@
     {
         try
         {
+            isLoading = true;
             var request = new ShortenUrlRequest(inputUrl);
             var response = await ApiClient.ShortenUrlAsync(request);
             shortCode = response.ShortCode;
@@ -126,6 +127,10 @@
         catch (Exception)
         {
             error = ApiErrorDto.Default;
+            isLoading = false;
+        }
+        finally
+        {
             isLoading = false;
         }
 
